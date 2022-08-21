@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Windows.UI.Xaml.Media;
 
 namespace InvoiceGenerator
 {
@@ -12,6 +8,5 @@ namespace InvoiceGenerator
     public static string column_ItemCount { get; } = "pocet";
     public static string column_ItemName { get; } = "polozka";
     public static string column_ItemPrice { get; } = "cena";
-
   }
 }

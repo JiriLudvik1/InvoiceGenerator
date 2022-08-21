@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data;
-using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Newtonsoft.Json;
+using Windows.ApplicationModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -17,9 +18,18 @@ namespace InvoiceGenerator
   /// </summary>
   public sealed partial class MainPage : Page
   {
+    public Config CurrentConfiguration;
     public MainPage()
     {
-      this.InitializeComponent();
+      InitializeComponent();
+      DataContext = this;
+      Task.Run(() => InitializeProgram());
+    }
+
+    public void InitializeProgram()
+    {
+      CurrentConfiguration = GetConfigFile().Result;
+      tbSelectedReport.Text = CurrentConfiguration.DefaultReportPath;
     }
 
     private async void btPickFile_Click(object sender, RoutedEventArgs e)
@@ -33,6 +43,7 @@ namespace InvoiceGenerator
       string fileContents = await ReadFileContents(selectedFile);
       if (fileContents.Equals(string.Empty))
       {
+        tbCsvPath.Text = String.Empty;
         return;
       }
 
@@ -52,6 +63,7 @@ namespace InvoiceGenerator
       tbCsvPath.Text = selectedFile.Path;
     }
 
+    #region Reading Files and contents
     private async Task<bool> ValidateData(DataTable table)
     {
       if (!table.Columns.Contains(Consts.column_ItemName))
@@ -92,6 +104,17 @@ namespace InvoiceGenerator
       StorageFile pickedCsvFile = await filePicker.PickSingleFileAsync();
       return pickedCsvFile;
     }
+
+    private async Task<Config> GetConfigFile()
+    {
+      StorageFolder appInstalledFolder = Package.Current.InstalledLocation;
+      StorageFolder data = await appInstalledFolder.GetFolderAsync("Data");
+
+      string content = await ReadFileContents(await data.GetFileAsync("config.json"));
+
+      return JsonConvert.DeserializeObject<Config>(content);
+    }
+    #endregion
 
     private async Task ShowErrorMessage(string message)
     {
