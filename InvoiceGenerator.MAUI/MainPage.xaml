@@ -44,6 +44,7 @@
             <HorizontalStackLayout Grid.Row="0">
                 <Label x:Name="tbCsvPath" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="200"/>
                 <Button  x:Name="btPickFile" Clicked="btPickFile_Clicked" HorizontalOptions="StartAndExpand" Text="Vyber soubor položek" VerticalOptions="CenterAndExpand"/>
+                <Button x:Name="TestBut" Clicked="TestBut_Clicked" Text="Test"/>
             </HorizontalStackLayout>
 
 

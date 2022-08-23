@@ -15,6 +15,7 @@ namespace InvoiceGenerator.MAUI
     public string City { get; set; }
     public string ZIPCode { get; set; }
     public string DefaultReportPath { get; set; }
+    public string ConnectionString { get; set; }
 
     public static Config InitializeConfigFromDisk()
     {

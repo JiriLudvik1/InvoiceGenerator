@@ -1,5 +1,6 @@
 ﻿using System.Data;
 
+
 namespace InvoiceGenerator.MAUI
 {
   public partial class MainPage : ContentPage
@@ -7,11 +8,13 @@ namespace InvoiceGenerator.MAUI
     public string ItemsCSVFilePath { get; set; }
     public DataTable ImportedItems { get; set; }
     public Config Configuration { get; set; }
+    public DBQueries DBQueries { get; set; }
 
     public MainPage()
     {
       InitializeComponent();
       Configuration = Config.InitializeConfigFromDisk();
+      DBQueries = new DBQueries(Configuration.ConnectionString);
 
       ReportPath.Text = Configuration.DefaultReportPath;
       SemanticScreenReader.Announce(ReportPath.Text);
@@ -68,6 +71,11 @@ namespace InvoiceGenerator.MAUI
         await DisplayAlert("Chyba!", "Došlo k chybě při načítání souboru", "Zrušit");
         return null;
       }
+    }
+
+    private void TestBut_Clicked(object sender, EventArgs e)
+    {
+      var customers = DBQueries.GetAllCustomers();
     }
   }
 }

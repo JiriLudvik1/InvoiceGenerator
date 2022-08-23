@@ -10,5 +10,6 @@
   "City": "Brno",
   "ZIPCode": "61600",
 
-  "DefaultReportPath": "tady bude cesta"
+  "DefaultReportPath": "tady bude cesta",
+  "ConnectionString": "DataSource=D:\\db\\invoices.db"
 }
