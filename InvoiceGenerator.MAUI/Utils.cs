@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.UI.Popups;
+﻿using System.Data;
 
-namespace InvoiceGenerator
+namespace InvoiceGenerator.MAUI
 {
   public static class Utils
   {
@@ -45,14 +39,16 @@ namespace InvoiceGenerator
       return true;
     }
 
-
-    public static async Task<string> ReadFileContents(StorageFile selectedFile)
+    public static string ReadFileContents(string path)
     {
-      if (selectedFile is null)
+      try
+      {
+        return File.ReadAllText(path);
+      }
+      catch 
       {
         return string.Empty;
       }
-      return await FileIO.ReadTextAsync(selectedFile); ;
     }
   }
 }

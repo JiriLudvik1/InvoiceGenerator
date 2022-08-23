@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InvoiceGenerator.MAUI.MainPage">
+
+    <!--<ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Label
+                Text="Hello, World!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Welcome to .NET Multi-platform App UI"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>-->
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+
+            <HorizontalStackLayout Grid.Row="0">
+                <Label x:Name="tbCsvPath" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="200"/>
+                <Button  x:Name="btPickFile" Clicked="btPickFile_Clicked" HorizontalOptions="StartAndExpand" Text="Vyber soubor položek" VerticalOptions="CenterAndExpand"/>
+            </HorizontalStackLayout>
+
+
+            <HorizontalStackLayout Grid.Row="2">
+                <Label x:Name="ReportPath" Text="Report path placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
+                <Label x:Name="CompanyName" Text="Company name placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
+            </HorizontalStackLayout>
+
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.UI.Popups;
 
 namespace InvoiceGenerator
 {
@@ -43,16 +41,6 @@ namespace InvoiceGenerator
         }
       }
       return true;
-    }
-
-
-    public static async Task<string> ReadFileContents(StorageFile selectedFile)
-    {
-      if (selectedFile is null)
-      {
-        return string.Empty;
-      }
-      return await FileIO.ReadTextAsync(selectedFile); ;
     }
   }
 }

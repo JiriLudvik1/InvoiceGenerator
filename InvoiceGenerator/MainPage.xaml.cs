@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using Windows.ApplicationModel;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -16,20 +17,30 @@ namespace InvoiceGenerator
   /// <summary>
   /// An empty page that can be used on its own or navigated to within a Frame.
   /// </summary>
-  public sealed partial class MainPage : Page
+  public sealed partial class MainPage : Page, INotifyPropertyChanged 
   {
-    public Config CurrentConfiguration;
+    private Config _currentConfiguration;
+    public Config CurrentConfiguration
+    {
+      get { return _currentConfiguration; }
+      set 
+      { 
+        _currentConfiguration = value;
+        OnPropertyChanged("CurrentConfiguration");
+      }
+    }
+
     public MainPage()
     {
       InitializeComponent();
       DataContext = this;
-      Task.Run(() => InitializeProgram());
+      InitializeProgram();
     }
 
     public void InitializeProgram()
     {
-      CurrentConfiguration = GetConfigFile().Result;
-      tbSelectedReport.Text = CurrentConfiguration.DefaultReportPath;
+      //CurrentConfiguration = GetConfigFile().Result;
+      CurrentConfiguration = Config.InitializeFromDisk();
     }
 
     private async void btPickFile_Click(object sender, RoutedEventArgs e)
@@ -40,7 +51,7 @@ namespace InvoiceGenerator
         return;
       }
 
-      string fileContents = await ReadFileContents(selectedFile);
+      string fileContents = await Utils.ReadFileContents(selectedFile);
       if (fileContents.Equals(string.Empty))
       {
         tbCsvPath.Text = String.Empty;
@@ -66,34 +77,13 @@ namespace InvoiceGenerator
     #region Reading Files and contents
     private async Task<bool> ValidateData(DataTable table)
     {
-      if (!table.Columns.Contains(Consts.column_ItemName))
+      if (!Utils.TableContainsColumns(Consts.ItemsMandatoryColumns, table, out string missingColumnName))
       {
-        await ShowErrorMessage($"Sloupec: {Consts.column_ItemName} nebyl nalezen!");
-        return false;
-      }
-
-      if (!table.Columns.Contains(Consts.column_ItemCount))
-      {
-        await ShowErrorMessage($"Sloupec: {Consts.column_ItemCount} nebyl nalezen!");
-        return false;
-      }
-
-      if (!table.Columns.Contains(Consts.column_ItemPrice))
-      {
-        await ShowErrorMessage($"Sloupec: {Consts.column_ItemPrice} nebyl nalezen!");
+        await ShowErrorMessage($"Sloupec: {missingColumnName} nebyl nalezen!");
         return false;
       }
 
       return true;
-    }
-
-    private async Task<string> ReadFileContents(StorageFile selectedFile)
-    {
-      if (selectedFile is null)
-      {
-        return string.Empty;
-      }
-      return await FileIO.ReadTextAsync(selectedFile); ;
     }
 
     private async Task<StorageFile> PickFile(string extension)
@@ -104,16 +94,6 @@ namespace InvoiceGenerator
       StorageFile pickedCsvFile = await filePicker.PickSingleFileAsync();
       return pickedCsvFile;
     }
-
-    private async Task<Config> GetConfigFile()
-    {
-      StorageFolder appInstalledFolder = Package.Current.InstalledLocation;
-      StorageFolder data = await appInstalledFolder.GetFolderAsync("Data");
-
-      string content = await ReadFileContents(await data.GetFileAsync("config.json"));
-
-      return JsonConvert.DeserializeObject<Config>(content);
-    }
     #endregion
 
     private async Task ShowErrorMessage(string message)
@@ -121,5 +101,18 @@ namespace InvoiceGenerator
       var messageDialog = new MessageDialog(message);
       await messageDialog.ShowAsync();
     }
-  }
+
+    #region PropertyChanged stuff
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private void OnPropertyChanged(string propertyName)
+    {
+      GUIThreadDispatcher.Instance.BeginInvoke(() =>
+      {
+        if (PropertyChanged != null)
+          PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      });
+    }
+      #endregion
+    }
 }
