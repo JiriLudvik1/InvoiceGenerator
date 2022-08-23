@@ -15,9 +15,6 @@ namespace InvoiceGenerator.MAUI
 
       ReportPath.Text = Configuration.DefaultReportPath;
       SemanticScreenReader.Announce(ReportPath.Text);
-
-      CompanyName.Text = Configuration.CompanyName;
-      SemanticScreenReader.Announce(CompanyName.Text);
     }
 
     private async void btPickFile_Clicked(object sender, EventArgs e)

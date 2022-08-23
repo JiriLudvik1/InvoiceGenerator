@@ -49,7 +49,6 @@
 
             <HorizontalStackLayout Grid.Row="2">
                 <Label x:Name="ReportPath" Text="Report path placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
-                <Label x:Name="CompanyName" Text="Company name placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
             </HorizontalStackLayout>
 
         </Grid>

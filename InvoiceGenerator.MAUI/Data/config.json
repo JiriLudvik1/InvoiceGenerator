@@ -1,8 +1,14 @@
 ﻿{
-  "Name": "",
-  "CompanyName": "ELMAX s.r.o.",
-  "IC": "123",
-  "DIC": "",
-  "AccountNumber": "123/0880",
+  "Name": "ing. Jiří Ludvík",
+  "PhoneNumber": "+420 603 887 396",
+  "ZLNumber": "371302-2251-01",
+  "IC": "16324315",
+  "DIC": "CZ6710280951",
+  "AccountNumber": "2301905187/2010",
+  "BankName": "Fio banka",
+  "Street": "Horova 3112/38",
+  "City": "Brno",
+  "ZIPCode": "61600",
+
   "DefaultReportPath": "tady bude cesta"
 }
