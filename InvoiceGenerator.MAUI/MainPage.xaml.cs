@@ -1,8 +1,6 @@
-﻿using PdfSharp.Drawing;
-using PdfSharp.Pdf;
+﻿using InvoiceGenerator.MAUI.Models;
 using System.Data;
 using System.Text;
-using PdfDocument = PdfSharp.Pdf.PdfDocument;
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace InvoiceGenerator.MAUI
@@ -13,6 +11,7 @@ namespace InvoiceGenerator.MAUI
     public DataTable ImportedItems { get; set; }
     public Config Configuration { get; set; }
     public DBQueries DBQueries { get; set; }
+    public Customer Customer { get; set; }
 
     public MainPage()
     {
@@ -103,5 +102,28 @@ namespace InvoiceGenerator.MAUI
       return result.Path;
     }
     #endregion
+
+    private void PickCustomer_Clicked(object sender, EventArgs e)
+    {
+      var customer = DBQueries.GetAllCustomers()[0];
+      FillCustomerModule(customer);
+    }
+
+    private void FillCustomerModule(Customer customer)
+    {
+      lblCustomer.Text = customer.Name;
+      lblStreet.Text = customer.Street;
+      lblCity.Text = customer.City;
+      lblZIPCode.Text = customer.ZIPCode;
+      lblIC.Text = customer.IC;
+      lblDIC.Text = customer.DIC;
+
+      SemanticScreenReader.Announce(lblCustomer.Text);
+      SemanticScreenReader.Announce(lblStreet.Text);
+      SemanticScreenReader.Announce(lblCity.Text);
+      SemanticScreenReader.Announce(lblZIPCode.Text);
+      SemanticScreenReader.Announce(lblIC.Text);
+      SemanticScreenReader.Announce(lblDIC.Text);
+    }
   }
 }

@@ -3,35 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InvoiceGenerator.MAUI.MainPage">
 
-    <!--<ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>-->
-
+    
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -40,6 +13,55 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="1" BackgroundColor="AliceBlue" Margin="10,10,10,10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Zákazník:" Grid.Row="0" Style="{StaticResource Key=StandardBold}"/>
+                <Label Text="Ulice:" Grid.Row="1" Style="{StaticResource Key=StandardBold}"/>
+                <Label Text="Město:" Grid.Row="2" Style="{StaticResource Key=StandardBold}"/>
+                <Label Text="PSČ:" Grid.Row="3" Style="{StaticResource Key=StandardBold}"/>
+                <Label Text="IČ:" Grid.Row="4" Style="{StaticResource Key=StandardBold}"/>
+                <Label Text="DIČ:" Grid.Row="5" Style="{StaticResource Key=StandardBold}"/>
+
+                <Label x:Name="lblCustomer" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+                <Label x:Name="lblStreet" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+                <Label x:Name="lblCity" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+                <Label x:Name="lblZIPCode" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+                <Label x:Name="lblIC" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+                <Label x:Name="lblDIC" Grid.Row="5" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+
+                <Button Grid.Row="6" Grid.ColumnSpan="2" x:Name="PickCustomer" Clicked="PickCustomer_Clicked" Text="Výběr zákazníka"/>
+
+
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="Beige" Margin="10,10,10,10">
+
+            </Grid>
+
+            <Grid Grid.Column="2" Grid.Row="1" BackgroundColor="LightGreen" Margin="10,10,10,10">
+
+            </Grid>
 
             <HorizontalStackLayout Grid.Row="0">
                 <Label x:Name="tbCsvPath" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="200"/>
@@ -54,5 +76,24 @@
 
         </Grid>
     </Grid>
+    
+    <ContentPage.Resources>
+        <!--LABELS-->
+        <Style x:Key="StandardBold" TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
 
+        <Style x:Key="Standard" TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </ContentPage.Resources>
 </ContentPage>
