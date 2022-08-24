@@ -14,15 +14,28 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListView x:Name="customers">
+        <ListView x:Name="customers" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{Binding Name}"
-                           FontAttributes="Italic"
-                           VerticalOptions="End" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0" Text="{Binding Name}" Style="{StaticResource Key=ListLabel}"/>
+                            <Label Grid.Column="1" Text="{Binding Street}" Style="{StaticResource Key=ListLabel}"/>
+                            <Label Grid.Column="2" Text="{Binding City}" Style="{StaticResource Key=ListLabel}"/>
+                            <Label Grid.Column="3" Text="{Binding ZIPCode}" Style="{StaticResource Key=ListLabel}"/>
+                            <Label Grid.Column="4" Text="{Binding IC}" Style="{StaticResource Key=ListLabel}"/>
+                            <Label Grid.Column="5" Text="{Binding DIC}" Style="{StaticResource Key=ListLabel}"/>
+
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -31,4 +44,15 @@
         <Button Grid.Row="1" Grid.Column="0" x:Name="btCancel" Clicked="btCancel_Clicked" Text="Zrušit"/>
         <Button Grid.Row="1" Grid.Column="1" x:Name="btConfirm" Clicked="btConfirm_Clicked" Text="Potvrdit"/>
     </Grid>
+    
+    <ContentPage.Resources>
+        <!--LABELS-->
+        <Style x:Key="ListLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </ContentPage.Resources>
 </ContentPage>

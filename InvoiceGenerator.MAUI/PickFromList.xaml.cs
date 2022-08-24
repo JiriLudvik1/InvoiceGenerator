@@ -30,7 +30,7 @@ namespace InvoiceGenerator.MAUI
     private async void btCancel_Clicked(object sender, EventArgs e)
     {
       IsCanceled = true;
-      await Navigation.PopModalAsync();
+      await Navigation.PopAsync();
     }
   }
 }
