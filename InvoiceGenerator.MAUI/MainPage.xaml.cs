@@ -1,5 +1,11 @@
-﻿using System.Data;
-
+﻿using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System.Data;
+using System.Diagnostics;
+using System.Text;
+using Windows.Storage.Pickers;
+using PdfDocument = PdfSharp.Pdf.PdfDocument;
+using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -18,6 +24,8 @@ namespace InvoiceGenerator.MAUI
 
       ReportPath.Text = Configuration.DefaultReportPath;
       SemanticScreenReader.Announce(ReportPath.Text);
+
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
 
     private async void btPickFile_Clicked(object sender, EventArgs e)
@@ -25,6 +33,11 @@ namespace InvoiceGenerator.MAUI
       try
       {
         var selectedFile = await PickFile();
+
+        if (selectedFile is null)
+        {
+          return;
+        }
 
         string fileContents = Utils.ReadFileContents(selectedFile.FullPath);
         ImportedItems = null;
@@ -73,9 +86,57 @@ namespace InvoiceGenerator.MAUI
       }
     }
 
-    private void TestBut_Clicked(object sender, EventArgs e)
+    public async Task<string> PickFolder()
     {
-      var customers = DBQueries.GetAllCustomers();
+      var folderPicker = new WindowsFolderPicker();
+      // Make it work for Windows 10
+      folderPicker.FileTypeFilter.Add("*");
+      // Get the current window's HWND by passing in the Window object
+      var hwnd = ((MauiWinUIWindow)App.Current.Windows[0].Handler.PlatformView).WindowHandle;
+
+      // Associate the HWND with the file picker
+      WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+
+      var result = await folderPicker.PickSingleFolderAsync();
+
+      return result.Path;
+    }
+
+    private async void TestBut_Clicked(object sender, EventArgs e)
+    {
+      try
+      {
+        // Create a new PDF document
+        PdfDocument document = new PdfDocument();
+        document.Info.Title = "Created with PDFsharp";
+
+        // Create an empty page
+        PdfPage page = document.AddPage();
+
+        // Get an XGraphics object for drawing
+        XGraphics gfx = XGraphics.FromPdfPage(page);
+
+        // Create a font
+        XFont font = new XFont("Arial", 15);
+
+        // Draw the text
+        gfx.DrawString("Hello, World!", font, XBrushes.Black,
+          new XRect(0, 0, page.Width, page.Height),
+          XStringFormats.Center);
+
+        // Save the document...
+        string folderPath = await PickFolder();
+        string filePath = $"{folderPath}\\test.pdf";
+
+        document.Save(filePath);
+        // ...and start a viewer.
+        Process.Start(filePath);
+      }
+      catch (Exception ex)
+      {
+
+      }
+
     }
   }
 }

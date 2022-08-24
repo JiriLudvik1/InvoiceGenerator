@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using InvoiceGenerator.MAUI.Models;
 using Microsoft.Data.Sqlite;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -25,12 +27,29 @@ namespace InvoiceGenerator.MAUI
           return conn.Query<Customer>(sql).ToList();
         }
       }
-      catch (Exception ex)
+      catch
       {
         return new List<Customer>();
       }
-
     }
 
+    //public DataTable GetAllCustomersTable()
+    //{
+    //  try
+    //  {
+    //    using (var conn = new SqliteConnection(ConnectionString))
+    //    {
+    //      string sql = "SELECT * FROM Customers";
+    //      conn.Open();
+    //      var list = conn.Query<Customer>(sql).ToList();
+
+
+    //    }
+    //  }
+    //  catch
+    //  {
+
+    //  }
+    //}
   }
 }

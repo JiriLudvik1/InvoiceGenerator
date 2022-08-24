@@ -10,6 +10,6 @@
   "City": "Brno",
   "ZIPCode": "61600",
 
-  "DefaultReportPath": "tady bude cesta",
+  "DefaultReportPath": "D:\\PROG\\PROJ\\InvoiceGenerator\\InvoiceGenerator\\InvoiceReports\\InvoiceSource.rdl",
   "ConnectionString": "DataSource=D:\\db\\invoices.db"
 }
