@@ -9,6 +9,7 @@
   "Street": "Horova 3112/38",
   "City": "Brno",
   "ZIPCode": "61600",
+  "ConstantSymbol": "8",
 
   "DefaultReportPath": "D:\\PROG\\PROJ\\InvoiceGenerator\\InvoiceGenerator\\InvoiceReports\\InvoiceSource.rdl",
   "ConnectionString": "DataSource=D:\\db\\invoices.db"

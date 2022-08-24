@@ -14,6 +14,7 @@ namespace InvoiceGenerator.MAUI
     public string Street { get; set; }
     public string City { get; set; }
     public string ZIPCode { get; set; }
+    public string ConstantSymbol { get; set; }
     public string DefaultReportPath { get; set; }
     public string ConnectionString { get; set; }
 
@@ -23,7 +24,6 @@ namespace InvoiceGenerator.MAUI
       string content = Utils.ReadFileContents(configFullPath);
 
       return JsonConvert.DeserializeObject<Config>(content);
-
     }
   }
 
