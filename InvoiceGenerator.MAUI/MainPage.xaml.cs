@@ -103,9 +103,20 @@ namespace InvoiceGenerator.MAUI
     }
     #endregion
 
-    private void PickCustomer_Clicked(object sender, EventArgs e)
+    private async void PickCustomer_Clicked(object sender, EventArgs e)
     {
-      var customer = DBQueries.GetAllCustomers()[0];
+      var customers = DBQueries.GetAllCustomers();
+      var customerSelectPage = new PickFromList(customers);
+      //Navigation.PushModalAsync(customerSelectPage);
+
+      await Utils.ShowPageAsDialog(Navigation ,customerSelectPage);
+
+      if (customerSelectPage.IsCanceled)
+      {
+        return;
+      }
+
+      var customer = customerSelectPage.SelectedCustomer;
       FillCustomerModule(customer);
     }
 

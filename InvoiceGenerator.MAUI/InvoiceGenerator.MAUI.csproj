@@ -65,6 +65,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="PickFromList.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="Data\config.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
