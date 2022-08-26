@@ -1,25 +1,23 @@
 ﻿using Dapper;
 using InvoiceGenerator.MAUI.Models;
 using Microsoft.Data.Sqlite;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace InvoiceGenerator.MAUI
 {
   public class DBQueries
   {
-    public string ConnectionString { get; }
+    private string connectionString { get; }
 
     public DBQueries(string connectionString)
-    {
-      ConnectionString = connectionString;
+    { 
+      this.connectionString = connectionString;
     }
 
     public List<Customer> GetAllCustomers()
     {
       try
       {
-        using (var conn = new SqliteConnection(ConnectionString))
+        using (var conn = new SqliteConnection(connectionString))
         {
           string sql = "SELECT * FROM Customers";
           conn.Open();
@@ -36,7 +34,7 @@ namespace InvoiceGenerator.MAUI
     {
       try
       {
-        using (var conn = new SqliteConnection(ConnectionString))
+        using (var conn = new SqliteConnection(connectionString))
         {
           return conn.ExecuteScalar<int>("SELECT NextInvoiceNumber FROM InvoiceNumber WHERE Year = @year", new { year = year });
         }
@@ -51,7 +49,7 @@ namespace InvoiceGenerator.MAUI
     {
       try
       {
-        using (var conn = new SqliteConnection(ConnectionString))
+        using (var conn = new SqliteConnection(connectionString))
         {
           conn.Execute("UPDATE InvoiceNumber SET NextInvoiceNumber = NextInvoiceNumber + 1 WHERE Year = @year", new {year = year});
         }

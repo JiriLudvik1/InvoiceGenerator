@@ -6,13 +6,15 @@ namespace InvoiceGenerator.MAUI
   {
     public readonly List<Customer> CustomerList;
     public Customer SelectedCustomer { get; set; }
-    public bool IsCanceled { get; set; } = false;
+    public bool IsCanceled { get; set; } = true;
 
     public PickFromList(List<Customer> customerList)
     {
       InitializeComponent();
       CustomerList = customerList;
       customers.ItemsSource = CustomerList;
+
+      btConfirm.IsEnabled = false;
     }
 
     private async void btConfirm_Clicked(object sender, EventArgs e)
@@ -24,6 +26,7 @@ namespace InvoiceGenerator.MAUI
       }
 
       SelectedCustomer = customers.SelectedItem as Customer;
+      IsCanceled = false;
       await Navigation.PopAsync();
     }
 
@@ -31,6 +34,11 @@ namespace InvoiceGenerator.MAUI
     {
       IsCanceled = true;
       await Navigation.PopAsync();
+    }
+
+    private void customers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+      btConfirm.IsEnabled = true;
     }
   }
 }

@@ -64,11 +64,6 @@ namespace InvoiceGenerator.MAUI
       }
     }
 
-    private void TestBut_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
     #region Files and Folders picking
     public async Task<FileResult> PickFile()
     {
@@ -99,16 +94,20 @@ namespace InvoiceGenerator.MAUI
       WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
 
       var result = await folderPicker.PickSingleFolderAsync();
+      if (result is null)
+      {
+        return string.Empty;
+      }
 
       return result.Path;
     }
     #endregion
 
+    #region Customer module
     private async void PickCustomer_Clicked(object sender, EventArgs e)
     {
       var customers = DBQueries.GetAllCustomers();
       var customerSelectPage = new PickFromList(customers);
-      //Navigation.PushModalAsync(customerSelectPage);
 
       await Utils.ShowPageAsDialog(Navigation ,customerSelectPage);
 
@@ -117,8 +116,8 @@ namespace InvoiceGenerator.MAUI
         return;
       }
 
-      var customer = customerSelectPage.SelectedCustomer;
-      FillCustomerModule(customer);
+      FillCustomerModule(customerSelectPage.SelectedCustomer);
+      Customer = customerSelectPage.SelectedCustomer;
     }
 
     private void FillCustomerModule(Customer customer)
@@ -130,7 +129,9 @@ namespace InvoiceGenerator.MAUI
       lblIC.Text = customer.IC;
       lblDIC.Text = customer.DIC;
     }
+    #endregion
 
+    #region Invoice generation module
     private async void btPickFolder_Clicked(object sender, EventArgs e)
     {
       string folderPath = await PickFolder();
@@ -165,12 +166,13 @@ namespace InvoiceGenerator.MAUI
       string invoiceNumberString = Utils.GetInvoiceNumberString(invoiceNumber);
 
       var sb = new StringBuilder();
-      sb.Append("Faktura ");
+      sb.Append("FAKTURA_");
       sb.Append(yearString);
       sb.Append(invoiceNumberString);
       sb.Append(".pdf");
 
       return sb.ToString();
     }
+    #endregion
   }
 }

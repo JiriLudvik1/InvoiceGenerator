@@ -33,7 +33,7 @@
             <Label Grid.Column="5" Text="DIČ" Style="{StaticResource Key=Header}"/>
         </Grid>
 
-        <ListView x:Name="customers" Grid.ColumnSpan="2" Grid.Row="1">
+        <ListView x:Name="customers" Grid.ColumnSpan="2" Grid.Row="1" ItemSelected="customers_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
