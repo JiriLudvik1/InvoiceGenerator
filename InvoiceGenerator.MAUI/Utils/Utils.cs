@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Text;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -63,5 +64,15 @@ namespace InvoiceGenerator.MAUI
       await navigation.PushAsync(page);
       await Task.Run(() => waitHandle.WaitOne());
     }
-  }
+
+    public static string GetCurrentYearString()
+    {
+      return DateTime.Now.Year.ToString();
+    }
+
+    public static string GetInvoiceNumberString(int number)
+    {
+      return number.ToString().PadLeft(3,'0');
+    }
+  } 
 }

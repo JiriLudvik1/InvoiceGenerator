@@ -12,5 +12,5 @@
   "ConstantSymbol": "8",
 
   "DefaultReportPath": "D:\\PROG\\PROJ\\InvoiceGenerator\\InvoiceGenerator\\InvoiceReports\\InvoiceSource.rdl",
-  "ConnectionString": "DataSource=D:\\db\\invoices.db"
+  "ConnectionString": "DataSource=D:\\_TOOLS\\Invoices\\invoices.db"
 }

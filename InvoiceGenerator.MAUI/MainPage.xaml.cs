@@ -20,7 +20,8 @@ namespace InvoiceGenerator.MAUI
       DBQueries = new DBQueries(Configuration.ConnectionString);
 
       ReportPath.Text = Configuration.DefaultReportPath;
-      SemanticScreenReader.Announce(ReportPath.Text);
+
+      enFileName.Text = GenerateInvoiceName();
 
       Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
@@ -128,13 +129,48 @@ namespace InvoiceGenerator.MAUI
       lblZIPCode.Text = customer.ZIPCode;
       lblIC.Text = customer.IC;
       lblDIC.Text = customer.DIC;
+    }
 
-      SemanticScreenReader.Announce(lblCustomer.Text);
-      SemanticScreenReader.Announce(lblStreet.Text);
-      SemanticScreenReader.Announce(lblCity.Text);
-      SemanticScreenReader.Announce(lblZIPCode.Text);
-      SemanticScreenReader.Announce(lblIC.Text);
-      SemanticScreenReader.Announce(lblDIC.Text);
+    private async void btPickFolder_Clicked(object sender, EventArgs e)
+    {
+      string folderPath = await PickFolder();
+
+      if (string.IsNullOrEmpty(folderPath))
+      {
+        return;
+      }
+
+      enFolderPath.Text = folderPath;
+    }
+
+    private void btGenerateInvoice_Clicked(object sender, EventArgs e)
+    {
+      int i = DBQueries.GetNextInvoiceNumber("2022");
+      DBQueries.IncrementInvoiceNumber("2022");
+
+      enFileName.Text = GenerateInvoiceName();
+    }
+
+    public string GenerateInvoiceName()
+    {
+      string yearString = Utils.GetCurrentYearString();
+      int invoiceNumber = DBQueries.GetNextInvoiceNumber(yearString);
+
+      if (invoiceNumber == -1)
+      {
+        DisplayAlert("Chyba", "Nelze získat číslo faktury z db", "Zrušit");
+        return string.Empty;
+      }
+
+      string invoiceNumberString = Utils.GetInvoiceNumberString(invoiceNumber);
+
+      var sb = new StringBuilder();
+      sb.Append("Faktura ");
+      sb.Append(yearString);
+      sb.Append(invoiceNumberString);
+      sb.Append(".pdf");
+
+      return sb.ToString();
     }
   }
 }

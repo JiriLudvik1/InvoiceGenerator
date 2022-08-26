@@ -13,7 +13,6 @@ namespace InvoiceGenerator.MAUI
     public DBQueries(string connectionString)
     {
       ConnectionString = connectionString;
-      //SQLitePCL.Batteries.Init();
     }
 
     public List<Customer> GetAllCustomers()
@@ -33,23 +32,36 @@ namespace InvoiceGenerator.MAUI
       }
     }
 
-    //public DataTable GetAllCustomersTable()
-    //{
-    //  try
-    //  {
-    //    using (var conn = new SqliteConnection(ConnectionString))
-    //    {
-    //      string sql = "SELECT * FROM Customers";
-    //      conn.Open();
-    //      var list = conn.Query<Customer>(sql).ToList();
+    public int GetNextInvoiceNumber(string year)
+    {
+      try
+      {
+        using (var conn = new SqliteConnection(ConnectionString))
+        {
+          return conn.ExecuteScalar<int>("SELECT NextInvoiceNumber FROM InvoiceNumber WHERE Year = @year", new { year = year });
+        }
+      }
+      catch
+      {
+        return -1;
+      }
+    }
 
+    public bool IncrementInvoiceNumber(string year)
+    {
+      try
+      {
+        using (var conn = new SqliteConnection(ConnectionString))
+        {
+          conn.Execute("UPDATE InvoiceNumber SET NextInvoiceNumber = NextInvoiceNumber + 1 WHERE Year = @year", new {year = year});
+        }
 
-    //    }
-    //  }
-    //  catch
-    //  {
-
-    //  }
-    //}
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
   }
 }
