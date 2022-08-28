@@ -18,7 +18,7 @@ namespace InvoiceGenerator.MAUI
       Configuration = Config.InitializeConfigFromDisk();
       DBQueries = new DBQueries(Configuration.ConnectionString);
 
-      enFileName.Text = GenerateInvoiceName();
+      enFileName.Text = GenerateInvoiceName().Result;
 
       Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
@@ -46,7 +46,7 @@ namespace InvoiceGenerator.MAUI
 
         if (Utils.TableContainsColumns(Consts.ItemsMandatoryColumns, ImportedItems, out string missingColumn))
         {
-          await DisplayAlert("Chyba", $"Chybí sloupec {missingColumn}", "Zrušit");
+          await ShowErrorMessage($"Chybí sloupec {missingColumn}");
           ImportedItems = null;
           ItemsCSVFilePath = String.Empty;
           return;
@@ -102,16 +102,16 @@ namespace InvoiceGenerator.MAUI
       enFolderPath.Text = folderPath;
     }
 
-    private void btGenerateInvoice_Clicked(object sender, EventArgs e)
+    private async void btGenerateInvoice_Clicked(object sender, EventArgs e)
     {
       if (Customer is null)
       {
-        DisplayAlert("Chyba", "Nebyl vybrán zákazník", "Zrušit");
+        await ShowErrorMessage("Nebyl vybrán zákazník");
         return;
       }
 
       string invoiceFullPath = $"{enFolderPath.Text}\\{enFileName.Text}";
-      var detail = GenerateInvoiceDetail();
+      var detail = await GenerateInvoiceDetail();
 
       if (detail is null)
       {
@@ -122,25 +122,25 @@ namespace InvoiceGenerator.MAUI
 
       if (!generator.GenerateAndSaveInvoicePDF())
       {
-        DisplayAlert("Chyba", "Chyba při generování PDF", "Zrušit");
+        await ShowErrorMessage("Chyba při generování PDF");
         return;
       }
 
-      DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
+      await DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
 
 
       DBQueries.IncrementInvoiceNumber("2022");
-      enFileName.Text = GenerateInvoiceName();
+      enFileName.Text = await GenerateInvoiceName();
     }
 
-    public string GenerateInvoiceName()
+    public async Task<string> GenerateInvoiceName()
     {
       string yearString = Utils.GetCurrentYearString();
       int invoiceNumber = DBQueries.GetNextInvoiceNumber(yearString);
 
       if (invoiceNumber == -1)
       {
-        DisplayAlert("Chyba", "Nelze získat číslo faktury z db", "Zrušit");
+        await ShowErrorMessage("elze získat číslo faktury z db");
         return string.Empty;
       }
 
@@ -155,11 +155,11 @@ namespace InvoiceGenerator.MAUI
       return sb.ToString();
     }
 
-    private InvoiceDetail GenerateInvoiceDetail()
+    private async Task<InvoiceDetail> GenerateInvoiceDetail()
     {
       InvoiceDetail invoiceDetail = new InvoiceDetail();
 
-      invoiceDetail.InvoiceName = GenerateInvoiceName();
+      invoiceDetail.InvoiceName = await GenerateInvoiceName();
       invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
       invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
       invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
@@ -167,7 +167,7 @@ namespace InvoiceGenerator.MAUI
 
       if(!Double.TryParse(enPresetPrice.Text, out double presetPrice))
       {
-        DisplayAlert("Chyba", "Neplatná cena!", "Zrušit");
+        await ShowErrorMessage("Neplatná cena");
         return null;
       }
 
@@ -192,6 +192,11 @@ namespace InvoiceGenerator.MAUI
       Configuration = settingsPage.Configuration;
       Config.SaveConfigToDisk(Configuration);
       DBQueries = new DBQueries(Configuration.ConnectionString);
+    }
+
+    private async Task ShowErrorMessage(string message)
+    {
+      await DisplayAlert("Chyba", message, "Zrušit");
     }
   }
 }

@@ -104,6 +104,7 @@ namespace InvoiceGenerator.MAUI
     }
     #endregion
 
+
     public static string GetCurrentYearString()
     {
       return DateTime.Now.Year.ToString();
