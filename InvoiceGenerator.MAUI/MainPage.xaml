@@ -14,7 +14,7 @@
       <ColumnDefinition Width="3*"/>
       <ColumnDefinition Width="3*"/>
     </Grid.ColumnDefinitions>
-    
+
     <!--Borders-->
     <Border Style="{StaticResource Key=FrameBorder}" Grid.Row="1" Grid.Column="0"/>
     <Border Style="{StaticResource Key=FrameBorder}" Grid.Row="1" Grid.Column="1"/>
@@ -60,8 +60,31 @@
     <!--Modul položek-->
     <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="Beige" Margin="10,10,10,10">
 
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <Label Text="Datum splatnosti:" Grid.Row="0" Style="{StaticResource Key=StandardBold}"/>
+      <Label Text="Datum vystavení faktury:" Grid.Row="1" Style="{StaticResource Key=StandardBold}"/>
+      <Label Text="Datum uskutečnění zdanitelného plnění:" Grid.Row="2" Style="{StaticResource Key=StandardBold}"/>
+      <Label Text="Cena:" Grid.Row="3" Style="{StaticResource Key=StandardBold}"/>
+      <Label Text="Přílohy:" Grid.Row="4" Style="{StaticResource Key=StandardBold}"/>
 
 
+      <DatePicker x:Name="dpPaymentDue" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <DatePicker x:Name="dpCreatedDate" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <DatePicker x:Name="dpDateOfTaxableSupply" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <Entry x:Name="enPresetPrice" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
+      <Entry x:Name="enAttachments" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
     </Grid>
 
     <!--Modul Generování faktury-->
@@ -98,8 +121,7 @@
 
 
     <HorizontalStackLayout Grid.Row="2">
-            <Button x:Name="btSettings" Text="Nastavení" Clicked="btSettings_Clicked"/>
-            <Label x:Name="ReportPath" Text="Report path placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
+      <Button x:Name="btSettings" Text="Nastavení" Clicked="btSettings_Clicked"/>
     </HorizontalStackLayout>
 
   </Grid>
@@ -131,12 +153,25 @@
       <Setter Property="Margin" Value="10"/>
       <Setter Property="BackgroundColor" Value="White"/>
     </Style>
-    
+
+    <Style x:Key="DataEntry" TargetType="Entry">
+      <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+      <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+      <Setter Property="Margin" Value="10"/>
+      <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
+
     <!--Borders-->
     <Style x:Key="FrameBorder" TargetType="Border">
       <Setter Property="BackgroundColor" Value="LightGray"/>
       <Setter Property="StrokeThickness" Value="4"/>
       <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <!--DatePickers-->
+    <Style x:Key="StandardDatePicker" TargetType="DatePicker">
+      <Setter Property="BackgroundColor" Value="DarkGray"/>
+      <Setter Property="Format" Value="dd/MM/yyyy"/>
     </Style>
   </ContentPage.Resources>
 </ContentPage>

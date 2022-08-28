@@ -1,7 +1,6 @@
 ﻿using InvoiceGenerator.MAUI.Models;
 using System.Data;
 using System.Text;
-using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -18,8 +17,6 @@ namespace InvoiceGenerator.MAUI
       InitializeComponent();
       Configuration = Config.InitializeConfigFromDisk();
       DBQueries = new DBQueries(Configuration.ConnectionString);
-
-      ReportPath.Text = Configuration.DefaultReportPath;
 
       enFileName.Text = GenerateInvoiceName();
 
@@ -107,9 +104,32 @@ namespace InvoiceGenerator.MAUI
 
     private void btGenerateInvoice_Clicked(object sender, EventArgs e)
     {
-      int i = DBQueries.GetNextInvoiceNumber("2022");
-      DBQueries.IncrementInvoiceNumber("2022");
+      if (Customer is null)
+      {
+        DisplayAlert("Chyba", "Nebyl vybrán zákazník", "Zrušit");
+        return;
+      }
 
+      string invoiceFullPath = $"{enFolderPath.Text}\\{enFileName.Text}";
+      var detail = GenerateInvoiceDetail();
+
+      if (detail is null)
+      {
+        return;
+      }
+
+      var generator = new PDFGenerator(Customer, detail, Configuration, invoiceFullPath);
+
+      if (!generator.GenerateAndSaveInvoicePDF())
+      {
+        DisplayAlert("Chyba", "Chyba při generování PDF", "Zrušit");
+        return;
+      }
+
+      DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
+
+
+      DBQueries.IncrementInvoiceNumber("2022");
       enFileName.Text = GenerateInvoiceName();
     }
 
@@ -133,6 +153,28 @@ namespace InvoiceGenerator.MAUI
       sb.Append(".pdf");
 
       return sb.ToString();
+    }
+
+    private InvoiceDetail GenerateInvoiceDetail()
+    {
+      InvoiceDetail invoiceDetail = new InvoiceDetail();
+
+      invoiceDetail.InvoiceName = GenerateInvoiceName();
+      invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
+      invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
+      invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
+      invoiceDetail.InstalationPreset = true;
+
+      if(!Double.TryParse(enPresetPrice.Text, out double presetPrice))
+      {
+        DisplayAlert("Chyba", "Neplatná cena!", "Zrušit");
+        return null;
+      }
+
+      invoiceDetail.PresetInstalationPrice = presetPrice;
+      invoiceDetail.Attachments = enAttachments.Text;
+
+      return invoiceDetail;
     }
     #endregion
 

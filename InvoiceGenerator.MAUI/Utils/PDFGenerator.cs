@@ -33,7 +33,7 @@ namespace InvoiceGenerator.MAUI
       {
         // Create a new PDF document
         PdfDocument document = new PdfDocument();
-        document.Info.Title = $"Faktura {invoiceDetail.InvoiceNumber}";
+        document.Info.Title = invoiceDetail.InvoiceName;
         PdfPage page = document.AddPage();
         XGraphics gfx = XGraphics.FromPdfPage(page);
 
