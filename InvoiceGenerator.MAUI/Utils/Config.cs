@@ -20,10 +20,28 @@ namespace InvoiceGenerator.MAUI
 
     public static Config InitializeConfigFromDisk()
     {
-      string configFullPath = $"{AppContext.BaseDirectory}/Data/config.json";
-      string content = Utils.ReadFileContents(configFullPath);
+      string content = Utils.ReadFileContents(GetConfigPath());
 
       return JsonConvert.DeserializeObject<Config>(content);
+    }
+
+    public static bool SaveConfigToDisk(Config configToSave)
+    {
+      try
+      {
+        string fileContents = JsonConvert.SerializeObject(configToSave);
+        File.WriteAllText(GetConfigPath(), fileContents);
+        return true;
+      }
+      catch 
+      {
+        return false;
+      }
+    }
+
+    private static string GetConfigPath()
+    {
+      return $"{AppContext.BaseDirectory}/Data/config.json";
     }
   }
 

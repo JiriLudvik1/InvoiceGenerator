@@ -30,7 +30,7 @@ namespace InvoiceGenerator.MAUI
     {
       try
       {
-        var selectedFile = await PickFile();
+        var selectedFile = await Utils.PickFile();
 
         if (selectedFile is null)
         {
@@ -64,45 +64,6 @@ namespace InvoiceGenerator.MAUI
       }
     }
 
-    #region Files and Folders picking
-    public async Task<FileResult> PickFile()
-    {
-      try
-      {
-        var result = await FilePicker.Default.PickAsync();
-
-        if (result is null)
-        {
-          return null;
-        }
-
-        return result;
-      }
-      catch
-      {
-        await DisplayAlert("Chyba!", "Došlo k chybě při načítání souboru", "Zrušit");
-        return null;
-      }
-    }
-
-    public async Task<string> PickFolder()
-    {
-      var folderPicker = new WindowsFolderPicker();
-      folderPicker.FileTypeFilter.Add("*");
-      var hwnd = ((MauiWinUIWindow)App.Current.Windows[0].Handler.PlatformView).WindowHandle;
-
-      WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
-
-      var result = await folderPicker.PickSingleFolderAsync();
-      if (result is null)
-      {
-        return string.Empty;
-      }
-
-      return result.Path;
-    }
-    #endregion
-
     #region Customer module
     private async void PickCustomer_Clicked(object sender, EventArgs e)
     {
@@ -134,7 +95,7 @@ namespace InvoiceGenerator.MAUI
     #region Invoice generation module
     private async void btPickFolder_Clicked(object sender, EventArgs e)
     {
-      string folderPath = await PickFolder();
+      string folderPath = await Utils.PickFolder();
 
       if (string.IsNullOrEmpty(folderPath))
       {
@@ -174,5 +135,21 @@ namespace InvoiceGenerator.MAUI
       return sb.ToString();
     }
     #endregion
+
+    private async void btSettings_Clicked(object sender, EventArgs e)
+    {
+      var settingsPage = new SettingsPage(Configuration);
+
+      await Utils.ShowPageAsDialog(Navigation, settingsPage);
+
+      if (settingsPage.IsCanceled)
+      {
+        return;
+      }
+
+      Configuration = settingsPage.Configuration;
+      Config.SaveConfigToDisk(Configuration);
+      DBQueries = new DBQueries(Configuration.ConnectionString);
+    }
   }
 }

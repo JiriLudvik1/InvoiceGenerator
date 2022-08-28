@@ -98,7 +98,8 @@
 
 
     <HorizontalStackLayout Grid.Row="2">
-      <Label x:Name="ReportPath" Text="Report path placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
+            <Button x:Name="btSettings" Text="Nastavení" Clicked="btSettings_Clicked"/>
+            <Label x:Name="ReportPath" Text="Report path placeholder" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand"/>
     </HorizontalStackLayout>
 
   </Grid>

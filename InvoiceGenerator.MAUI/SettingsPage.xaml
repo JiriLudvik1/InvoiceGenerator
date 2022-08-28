@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InvoiceGenerator.MAUI.SettingsPage"
+             Title="SettingsPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Text="Jméno:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="1" Grid.Column="0" Text="Telefon:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="2" Grid.Column="0" Text="Číslo ŽL:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="3" Grid.Column="0" Text="IČ:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="4" Grid.Column="0" Text="DIČ:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="5" Grid.Column="0" Text="Číslo účtu:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="6" Grid.Column="0" Text="Jméno banky:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="7" Grid.Column="0" Text="Ulice a č.p.:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="8" Grid.Column="0" Text="Město:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="9" Grid.Column="0" Text="PSČ:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="10" Grid.Column="0" Text="Konstantní symbol:" Style="{StaticResource Key=ParameterName}"/>
+        <Label Grid.Row="11" Grid.Column="0" Text="Umístění databáze:" Style="{StaticResource Key=ParameterName}"/>
+
+        <Entry x:Name="enName" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enPhone" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enZLNumber" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enIC" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enDIC" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enAccountNumber" Grid.Row="5" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enBankName" Grid.Row="6" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enStreet" Grid.Row="7" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enCity" Grid.Row="8" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enZIPCode" Grid.Row="9" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enConstantSymbol" Grid.Row="10" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Entry x:Name="enDbLocation" Grid.Row="11" Grid.Column="1" Style="{StaticResource Key=SettingsEntry}"/>
+        <Button x:Name="btFindDb" Grid.Row="11" Grid.Column="1" VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" Text="Vyber soubor" Clicked="btFindDb_Clicked"/>
+
+        <Button Grid.Row="12" Grid.Column="0" x:Name="btCancel" Clicked="btCancel_Clicked" Text="Zrušit"/>
+        <Button Grid.Row="12" Grid.Column="1" x:Name="btConfirm" Clicked="btConfirm_Clicked" Text="Potvrdit"/>
+
+    </Grid>
+
+    <ContentPage.Resources>
+        <!--LABELS-->
+        <Style x:Key="ParameterName" TargetType="Label">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
+        <!--Entries-->
+        <Style x:Key="SettingsEntry" TargetType="Entry">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+    </ContentPage.Resources>
+</ContentPage>

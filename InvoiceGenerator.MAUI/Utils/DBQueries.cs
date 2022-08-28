@@ -8,9 +8,9 @@ namespace InvoiceGenerator.MAUI
   {
     private string connectionString { get; }
 
-    public DBQueries(string connectionString)
+    public DBQueries(string fileLocation)
     { 
-      this.connectionString = connectionString;
+      this.connectionString = $"DataSource={fileLocation}";
     }
 
     public List<Customer> GetAllCustomers()

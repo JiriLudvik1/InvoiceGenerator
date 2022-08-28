@@ -1,5 +1,6 @@
 ﻿using System.Data;
-using System.Text;
+using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
+
 
 namespace InvoiceGenerator.MAUI
 {
@@ -65,6 +66,44 @@ namespace InvoiceGenerator.MAUI
       await Task.Run(() => waitHandle.WaitOne());
     }
 
+    #region Files and Folders picking
+    public static async Task<FileResult> PickFile()
+    {
+      try
+      {
+        var result = await FilePicker.Default.PickAsync();
+
+        if (result is null)
+        {
+          return null;
+        }
+
+        return result;
+      }
+      catch
+      {
+        return null;
+      }
+    }
+
+    public static async Task<string> PickFolder()
+    {
+      var folderPicker = new WindowsFolderPicker();
+      folderPicker.FileTypeFilter.Add("*");
+      var hwnd = ((MauiWinUIWindow)App.Current.Windows[0].Handler.PlatformView).WindowHandle;
+
+      WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+
+      var result = await folderPicker.PickSingleFolderAsync();
+      if (result is null)
+      {
+        return string.Empty;
+      }
+
+      return result.Path;
+    }
+    #endregion
+
     public static string GetCurrentYearString()
     {
       return DateTime.Now.Year.ToString();
@@ -74,5 +113,6 @@ namespace InvoiceGenerator.MAUI
     {
       return number.ToString().PadLeft(3,'0');
     }
+
   } 
 }
