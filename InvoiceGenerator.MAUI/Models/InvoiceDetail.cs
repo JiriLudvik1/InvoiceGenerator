@@ -2,6 +2,7 @@
 {
   public class InvoiceDetail
   {
+    public string Number { get; set; }
     public string InvoiceName { get; set; }
     public DateOnly PaymentDue { get; set; }
     public DateOnly CreatedDate { get; set; }

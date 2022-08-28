@@ -1,6 +1,7 @@
 ﻿using InvoiceGenerator.MAUI.Models;
 using System.Data;
 using System.Text;
+using Windows.Graphics.Printing3D;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -18,7 +19,7 @@ namespace InvoiceGenerator.MAUI
       Configuration = Config.InitializeConfigFromDisk();
       DBQueries = new DBQueries(Configuration.ConnectionString);
 
-      enFileName.Text = GenerateInvoiceName().Result;
+      enFileName.Text = GenerateInvoiceName(true).Result;
 
       Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
@@ -130,10 +131,10 @@ namespace InvoiceGenerator.MAUI
 
 
       DBQueries.IncrementInvoiceNumber("2022");
-      enFileName.Text = await GenerateInvoiceName();
+      enFileName.Text = await GenerateInvoiceName(true);
     }
 
-    public async Task<string> GenerateInvoiceName()
+    public async Task<string> GenerateInvoiceName(bool returnFileName)
     {
       string yearString = Utils.GetCurrentYearString();
       int invoiceNumber = DBQueries.GetNextInvoiceNumber(yearString);
@@ -147,10 +148,19 @@ namespace InvoiceGenerator.MAUI
       string invoiceNumberString = Utils.GetInvoiceNumberString(invoiceNumber);
 
       var sb = new StringBuilder();
-      sb.Append("FAKTURA_");
+
+      if (returnFileName)
+      {
+        sb.Append("FAKTURA_");
+      }
       sb.Append(yearString);
+
       sb.Append(invoiceNumberString);
-      sb.Append(".pdf");
+
+      if (returnFileName)
+      {
+        sb.Append(".pdf");
+      }
 
       return sb.ToString();
     }
@@ -159,7 +169,8 @@ namespace InvoiceGenerator.MAUI
     {
       InvoiceDetail invoiceDetail = new InvoiceDetail();
 
-      invoiceDetail.InvoiceName = await GenerateInvoiceName();
+      invoiceDetail.Number = await GenerateInvoiceName(false);
+      invoiceDetail.InvoiceName = await GenerateInvoiceName(true);
       invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
       invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
       invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
