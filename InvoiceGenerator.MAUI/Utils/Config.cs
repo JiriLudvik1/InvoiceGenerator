@@ -17,10 +17,14 @@ namespace InvoiceGenerator.MAUI
     public string ConstantSymbol { get; set; }
     public string DefaultReportPath { get; set; }
     public string ConnectionString { get; set; }
+    private static string configFilePath
+    {
+      get { return $"{AppContext.BaseDirectory}/Data/config.json"; }
+    }
 
     public static Config InitializeConfigFromDisk()
     {
-      string content = Utils.ReadFileContents(GetConfigPath());
+      string content = Utils.ReadFileContents(configFilePath);
 
       return JsonConvert.DeserializeObject<Config>(content);
     }
@@ -30,7 +34,7 @@ namespace InvoiceGenerator.MAUI
       try
       {
         string fileContents = JsonConvert.SerializeObject(configToSave);
-        File.WriteAllText(GetConfigPath(), fileContents);
+        File.WriteAllText(configFilePath, fileContents);
         return true;
       }
       catch 
@@ -38,11 +42,5 @@ namespace InvoiceGenerator.MAUI
         return false;
       }
     }
-
-    private static string GetConfigPath()
-    {
-      return $"{AppContext.BaseDirectory}/Data/config.json";
-    }
   }
-
 }
