@@ -1,7 +1,6 @@
 ﻿using InvoiceGenerator.MAUI.Models;
 using System.Data;
 using System.Text;
-using Windows.Graphics.Printing3D;
 
 namespace InvoiceGenerator.MAUI
 {
@@ -17,11 +16,21 @@ namespace InvoiceGenerator.MAUI
     {
       InitializeComponent();
       Configuration = Config.InitializeConfigFromDisk();
-      DBQueries = new DBQueries(Configuration.ConnectionString);
-
-      enFileName.Text = GenerateInvoiceName(true).Result;
+      //Tohle není příliš elegantní řešení, možná to oprav
+      Task.Run(() => InitializeDb());
 
       Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    }
+
+    private async Task InitializeDb()
+    {
+      DBQueries = new DBQueries(Configuration.ConnectionString);
+      string newInvoiceName = await GenerateInvoiceName(true);
+      if (string.IsNullOrEmpty(newInvoiceName))
+      {
+        return;
+      }
+      enFileName.Text = newInvoiceName;
     }
 
     private async void btPickFile_Clicked(object sender, EventArgs e)
@@ -141,7 +150,7 @@ namespace InvoiceGenerator.MAUI
 
       if (invoiceNumber == -1)
       {
-        await ShowErrorMessage("elze získat číslo faktury z db");
+        await ShowErrorMessage("Nelze získat číslo faktury z db");
         return string.Empty;
       }
 

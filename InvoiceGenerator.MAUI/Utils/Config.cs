@@ -19,7 +19,7 @@ namespace InvoiceGenerator.MAUI
     public string ConnectionString { get; set; }
     private static string configFilePath
     {
-      get { return $"{AppContext.BaseDirectory}/Data/config.json"; }
+      get { return $"{AppContext.BaseDirectory}\\Data\\config.json"; }
     }
 
     public static Config InitializeConfigFromDisk()
