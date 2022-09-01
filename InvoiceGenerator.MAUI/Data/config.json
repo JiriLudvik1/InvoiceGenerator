@@ -10,7 +10,9 @@
   "City": "Brno",
   "ZIPCode": "61600",
   "ConstantSymbol": "8",
+  "EmailHost": "smtp.gmail.com",
+  "EmailPort": "587",
 
   "DefaultReportPath": "D:\\PROG\\PROJ\\InvoiceGenerator\\InvoiceGenerator\\InvoiceReports\\InvoiceSource.rdl",
-  "ConnectionString": "DataSource=D:\\db\\01invoices.db"
+  "ConnectionString": ""
 }
