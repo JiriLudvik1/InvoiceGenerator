@@ -141,7 +141,7 @@ namespace InvoiceGenerator.MAUI
 
       await DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
 
-      if (EmailService is not null)
+      if (EmailService is not null && !string.IsNullOrEmpty(Customer.Email))
       {
         await HandleEmailSending(invoiceFullPath, detail);
       }

@@ -3,84 +3,87 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InvoiceGenerator.MAUI.PickFromList"
              Title="Výběr">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="100"/>
+    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
 
-        <Grid BackgroundColor="LightGrey" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid BackgroundColor="LightGrey" Grid.ColumnSpan="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Text="Zákazník" Style="{StaticResource Key=Header}"/>
-            <Label Grid.Column="1" Text="Ulice" Style="{StaticResource Key=Header}"/>
-            <Label Grid.Column="2" Text="Město" Style="{StaticResource Key=Header}"/>
-            <Label Grid.Column="3" Text="PSČ" Style="{StaticResource Key=Header}"/>
-            <Label Grid.Column="4" Text="IČ" Style="{StaticResource Key=Header}"/>
-            <Label Grid.Column="5" Text="DIČ" Style="{StaticResource Key=Header}"/>
-        </Grid>
-
-        <ListView x:Name="customers" Grid.ColumnSpan="2" Grid.Row="1" ItemSelected="customers_ItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Label Grid.Column="0" Text="{Binding Name}" Style="{StaticResource Key=ListLabel}"/>
-                            <Label Grid.Column="1" Text="{Binding Street}" Style="{StaticResource Key=ListLabel}"/>
-                            <Label Grid.Column="2" Text="{Binding City}" Style="{StaticResource Key=ListLabel}"/>
-                            <Label Grid.Column="3" Text="{Binding ZIPCode}" Style="{StaticResource Key=ListLabel}"/>
-                            <Label Grid.Column="4" Text="{Binding IC}" Style="{StaticResource Key=ListLabel}"/>
-                            <Label Grid.Column="5" Text="{Binding DIC}" Style="{StaticResource Key=ListLabel}"/>
-
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <Button Grid.Row="2" Grid.Column="0" x:Name="btCancel" Clicked="btCancel_Clicked" Text="Zrušit"/>
-        <Button Grid.Row="2" Grid.Column="1" x:Name="btConfirm" Clicked="btConfirm_Clicked" Text="Potvrdit"/>
+      <Label Grid.Column="0" Text="Zákazník" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="1" Text="Ulice" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="2" Text="Město" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="3" Text="PSČ" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="4" Text="IČ" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="5" Text="DIČ" Style="{StaticResource Key=Header}"/>
+      <Label Grid.Column="6" Text="Email" Style="{StaticResource Key=Header}"/>
     </Grid>
-    
-    <ContentPage.Resources>
-        <!--LABELS-->
-        <Style x:Key="Header" TargetType="Label">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
-            <Setter Property="TextColor" Value="Black"/>
-            <Setter Property="Margin" Value="5"/>
-        </Style>
 
-        <Style x:Key="ListLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-            <Setter Property="TextColor" Value="Black"/>
-            <Setter Property="Margin" Value="5"/>
-        </Style>
-    </ContentPage.Resources>
+    <ListView x:Name="customers" Grid.ColumnSpan="2" Grid.Row="1" ItemSelected="customers_ItemSelected">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+
+              <Label Grid.Column="0" Text="{Binding Name}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="1" Text="{Binding Street}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="2" Text="{Binding City}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="3" Text="{Binding ZIPCode}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="4" Text="{Binding IC}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="5" Text="{Binding DIC}" Style="{StaticResource Key=ListLabel}"/>
+              <Label Grid.Column="6" Text="{Binding Email}" Style="{StaticResource Key=ListLabel}"/>
+            </Grid>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+    <Button Grid.Row="2" Grid.Column="0" x:Name="btCancel" Clicked="btCancel_Clicked" Text="Zrušit"/>
+    <Button Grid.Row="2" Grid.Column="1" x:Name="btConfirm" Clicked="btConfirm_Clicked" Text="Potvrdit"/>
+  </Grid>
+
+  <ContentPage.Resources>
+    <!--LABELS-->
+    <Style x:Key="Header" TargetType="Label">
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+      <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+      <Setter Property="FontAttributes" Value="Bold"/>
+      <Setter Property="TextColor" Value="Black"/>
+      <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <Style x:Key="ListLabel" TargetType="Label">
+      <Setter Property="FontSize" Value="20"/>
+      <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+      <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+      <Setter Property="TextColor" Value="Black"/>
+      <Setter Property="Margin" Value="5"/>
+    </Style>
+  </ContentPage.Resources>
 </ContentPage>
