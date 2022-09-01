@@ -31,6 +31,7 @@
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
       <Grid.ColumnDefinitions>
@@ -44,6 +45,7 @@
       <Label Text="PSČ:" Grid.Row="3" Style="{StaticResource Key=StandardBold}"/>
       <Label Text="IČ:" Grid.Row="4" Style="{StaticResource Key=StandardBold}"/>
       <Label Text="DIČ:" Grid.Row="5" Style="{StaticResource Key=StandardBold}"/>
+      <Label Text="Email:" Grid.Row="6" Style="{StaticResource Key=StandardBold}"/>
 
       <Label x:Name="lblCustomer" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
       <Label x:Name="lblStreet" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
@@ -51,8 +53,9 @@
       <Label x:Name="lblZIPCode" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
       <Label x:Name="lblIC" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
       <Label x:Name="lblDIC" Grid.Row="5" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label x:Name="lblEmail" Grid.Row="6" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
 
-      <Button Grid.Row="6" Grid.ColumnSpan="2" x:Name="PickCustomer" Clicked="PickCustomer_Clicked" Text="Výběr zákazníka" Margin="10"/>
+      <Button Grid.Row="7" Grid.ColumnSpan="2" x:Name="PickCustomer" Clicked="PickCustomer_Clicked" Text="Výběr zákazníka" Margin="10"/>
 
 
     </Grid>
@@ -115,7 +118,12 @@
     </Grid>
 
     <HorizontalStackLayout Grid.Row="0">
-      <Label x:Name="tbCsvPath" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="200"/>
+      <Label Text="Email:" Style="{StaticResource Key=TopMenuLabel}"/>
+      <Entry x:Name="enEmail" Style="{StaticResource Key=TopMenuEntry}"/>
+      <Label Text="Heslo:" Style="{StaticResource Key=TopMenuLabel}"/>
+      <Entry x:Name="enPassword" Style="{StaticResource Key=TopMenuEntry}" IsPassword="True"/>
+      <Button x:Name="btLoginEmail" Text="Přihlásit" Clicked="btLoginEmail_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+
       <Button  x:Name="btPickFile" Clicked="btPickFile_Clicked" HorizontalOptions="StartAndExpand" Text="Vyber soubor položek" VerticalOptions="CenterAndExpand"/>
     </HorizontalStackLayout>
 
@@ -146,6 +154,12 @@
       <Setter Property="Margin" Value="10"/>
     </Style>
 
+    <Style x:Key="TopMenuLabel" TargetType="Label">
+      <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+      <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+      <Setter Property="Margin" Value="5"/>
+    </Style>
+
     <!--Entries-->
     <Style x:Key="StandardEntry" TargetType="Entry">
       <Setter Property="VerticalOptions" Value="StartAndExpand"/>
@@ -159,6 +173,12 @@
       <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
       <Setter Property="Margin" Value="10"/>
       <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
+
+    <Style x:Key="TopMenuEntry" TargetType="Entry">
+      <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+      <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+      <Setter Property="WidthRequest" Value="300"/>
     </Style>
 
     <!--Borders-->

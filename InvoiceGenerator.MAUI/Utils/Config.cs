@@ -17,6 +17,9 @@ namespace InvoiceGenerator.MAUI
     public string ConstantSymbol { get; set; }
     public string DefaultReportPath { get; set; }
     public string ConnectionString { get; set; }
+    public string EmailHost { get; set; }
+    public int EmailPort { get; set; }
+
     private static string configFilePath
     {
       get { return $"{AppContext.BaseDirectory}\\Data\\config.json"; }

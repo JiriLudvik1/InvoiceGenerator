@@ -9,5 +9,6 @@
     public string ZIPCode { get; set; }
     public string IC { get; set; }
     public string DIC { get; set; }
+    public string Email { get; set; }
   }
 }

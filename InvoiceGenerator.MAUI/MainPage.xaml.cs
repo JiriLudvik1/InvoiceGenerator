@@ -1,5 +1,6 @@
 ﻿using InvoiceGenerator.MAUI.Models;
 using System.Data;
+using System.Net.Mail;
 using System.Text;
 
 namespace InvoiceGenerator.MAUI
@@ -11,6 +12,7 @@ namespace InvoiceGenerator.MAUI
     public Config Configuration { get; set; }
     public DBQueries DBQueries { get; set; }
     public Customer Customer { get; set; }
+    public EmailService EmailService { get; set; }
 
     public MainPage()
     {
@@ -35,40 +37,40 @@ namespace InvoiceGenerator.MAUI
 
     private async void btPickFile_Clicked(object sender, EventArgs e)
     {
-      try
-      {
-        var selectedFile = await Utils.PickFile();
+      //try
+      //{
+      //  var selectedFile = await Utils.PickFile();
 
-        if (selectedFile is null)
-        {
-          return;
-        }
+      //  if (selectedFile is null)
+      //  {
+      //    return;
+      //  }
 
-        string fileContents = Utils.ReadFileContents(selectedFile.FullPath);
-        ImportedItems = null;
-        ImportedItems = Utils.CSVStringToDataTable(fileContents, Consts.csvDelimiter);
+      //  string fileContents = Utils.ReadFileContents(selectedFile.FullPath);
+      //  ImportedItems = null;
+      //  ImportedItems = Utils.CSVStringToDataTable(fileContents, Consts.csvDelimiter);
 
-        if (ImportedItems is null)
-        {
-          ItemsCSVFilePath = String.Empty;
-          return;
-        }
+      //  if (ImportedItems is null)
+      //  {
+      //    ItemsCSVFilePath = String.Empty;
+      //    return;
+      //  }
 
-        if (Utils.TableContainsColumns(Consts.ItemsMandatoryColumns, ImportedItems, out string missingColumn))
-        {
-          await ShowErrorMessage($"Chybí sloupec {missingColumn}");
-          ImportedItems = null;
-          ItemsCSVFilePath = String.Empty;
-          return;
-        }
+      //  if (Utils.TableContainsColumns(Consts.ItemsMandatoryColumns, ImportedItems, out string missingColumn))
+      //  {
+      //    await ShowErrorMessage($"Chybí sloupec {missingColumn}");
+      //    ImportedItems = null;
+      //    ItemsCSVFilePath = String.Empty;
+      //    return;
+      //  }
 
-        ItemsCSVFilePath = selectedFile.FullPath;
-      }
-      finally
-      {
-        tbCsvPath.Text = ItemsCSVFilePath;
-        SemanticScreenReader.Announce(tbCsvPath.Text);
-      }
+      //  ItemsCSVFilePath = selectedFile.FullPath;
+      //}
+      //finally
+      //{
+      //  tbCsvPath.Text = ItemsCSVFilePath;
+      //  SemanticScreenReader.Announce(tbCsvPath.Text);
+      //}
     }
 
     #region Customer module
@@ -96,6 +98,7 @@ namespace InvoiceGenerator.MAUI
       lblZIPCode.Text = customer.ZIPCode;
       lblIC.Text = customer.IC;
       lblDIC.Text = customer.DIC;
+      lblEmail.Text = customer.Email;
     }
     #endregion
 
@@ -138,9 +141,30 @@ namespace InvoiceGenerator.MAUI
 
       await DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
 
+      if (EmailService is not null)
+      {
+        await HandleEmailSending(invoiceFullPath, detail);
+      }
 
-      DBQueries.IncrementInvoiceNumber("2022");
+      DBQueries.IncrementInvoiceNumber(Utils.GetCurrentYearString());
       enFileName.Text = await GenerateInvoiceName(true);
+    }
+
+    private async Task HandleEmailSending(string invoiceFullPath, InvoiceDetail detail)
+    {
+      bool sendEmail = await DisplayAlert("Odeslat emailem?", $"Odeslat fakturu na: {Customer.Email}?", "Ano", "Ne");
+      if (!sendEmail)
+      {
+        return;
+      }
+
+      if(!EmailService.SendInvoice(Customer, detail, invoiceFullPath))
+      {
+        await ShowErrorMessage("Nepodařilo se odeslat email!");
+        return;
+      }
+
+      await DisplayAlert("Info", "Email byl odeslán!", "Zrušit");
     }
 
     public async Task<string> GenerateInvoiceName(bool returnFileName)
@@ -198,6 +222,32 @@ namespace InvoiceGenerator.MAUI
     }
     #endregion
 
+    #region Top and bottom menu handlers
+    private async void btLoginEmail_Clicked(object sender, EventArgs e)
+    {
+      if (string.IsNullOrEmpty(enEmail.Text) || string.IsNullOrEmpty(enPassword.Text))
+      {
+        await ShowErrorMessage("Nevyplněné pole!");
+        return;
+      }
+
+      var mailAddress = CreateMailAddress(enEmail.Text);
+      if (mailAddress is null)
+      {
+        await ShowErrorMessage("Neplatná emailová adresa!");
+        enEmail.Text = String.Empty;
+        enPassword.Text = String.Empty;
+        return;
+      }
+
+      EmailService = new EmailService(mailAddress, enPassword.Text, Configuration.EmailHost, Configuration.EmailPort);
+
+      enPassword.IsEnabled = false;
+      enEmail.IsEnabled = false;
+      btLoginEmail.Text = "Přihlášen!";
+      btLoginEmail.IsEnabled = false;
+    }
+
     private async void btSettings_Clicked(object sender, EventArgs e)
     {
       var settingsPage = new SettingsPage(Configuration);
@@ -212,6 +262,19 @@ namespace InvoiceGenerator.MAUI
       Configuration = settingsPage.Configuration;
       Config.SaveConfigToDisk(Configuration);
       DBQueries = new DBQueries(Configuration.ConnectionString);
+    }
+    #endregion
+
+    private MailAddress CreateMailAddress(string email)
+    {
+      try
+      {
+        return new MailAddress(email);
+      }
+      catch 
+      {
+        return null;
+      }
     }
 
     private async Task ShowErrorMessage(string message)
