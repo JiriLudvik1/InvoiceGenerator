@@ -47,9 +47,9 @@ namespace InvoiceGenerator.MAUI.ViewModels
       Customer = customerSelectPage.SelectedCustomer;
     });
 
-    public ICommand GenerateInvoice => new Command(() =>
+    public ICommand GenerateInvoice => new Command(async () =>
     {
-      NextInvoiceNumber++;
+      await App.AlertService.ShowInfoAsync("test");
     });
   }
 }
