@@ -1,4 +1,5 @@
 ﻿using InvoiceGenerator.MAUI.Models;
+using InvoiceGenerator.MAUI.ViewModels;
 using System.Data;
 using System.Net.Mail;
 using System.Text;
@@ -14,9 +15,13 @@ namespace InvoiceGenerator.MAUI
     public Customer Customer { get; set; }
     public EmailService EmailService { get; set; }
 
+    public MainPageViewModel ViewModel { get; set; }
+
     public MainPage()
     {
       InitializeComponent();
+      ViewModel = new MainPageViewModel(Navigation);
+      BindingContext = ViewModel;
       Configuration = Config.InitializeConfigFromDisk();
       //Tohle není příliš elegantní řešení, možná to oprav
       Task.Run(() => InitializeDb());
@@ -72,35 +77,6 @@ namespace InvoiceGenerator.MAUI
       //  SemanticScreenReader.Announce(tbCsvPath.Text);
       //}
     }
-
-    #region Customer module
-    private async void PickCustomer_Clicked(object sender, EventArgs e)
-    {
-      var customers = DBQueries.GetAllCustomers();
-      var customerSelectPage = new PickFromList(customers);
-
-      await Utils.ShowPageAsDialog(Navigation ,customerSelectPage);
-
-      if (customerSelectPage.IsCanceled)
-      {
-        return;
-      }
-
-      FillCustomerModule(customerSelectPage.SelectedCustomer);
-      Customer = customerSelectPage.SelectedCustomer;
-    }
-
-    private void FillCustomerModule(Customer customer)
-    {
-      lblCustomer.Text = customer.Name;
-      lblStreet.Text = customer.Street;
-      lblCity.Text = customer.City;
-      lblZIPCode.Text = customer.ZIPCode;
-      lblIC.Text = customer.IC;
-      lblDIC.Text = customer.DIC;
-      lblEmail.Text = customer.Email;
-    }
-    #endregion
 
     #region Invoice generation module
     private async void btPickFolder_Clicked(object sender, EventArgs e)

@@ -21,7 +21,7 @@
     <Border Style="{StaticResource Key=FrameBorder}" Grid.Row="1" Grid.Column="2"/>
 
     <!--Modul zákazník-->
-    <Grid Grid.Column="0" Grid.Row="1" BackgroundColor="AliceBlue" Margin="10,10,10,10">
+    <Grid Grid.Column="0" Grid.Row="1" BackgroundColor="AliceBlue" Margin="10,10,10,10" BindingContext="{Binding Customer}">
 
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
@@ -47,18 +47,17 @@
       <Label Text="DIČ:" Grid.Row="5" Style="{StaticResource Key=StandardBold}"/>
       <Label Text="Email:" Grid.Row="6" Style="{StaticResource Key=StandardBold}"/>
 
-      <Label x:Name="lblCustomer" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblStreet" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblCity" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblZIPCode" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblIC" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblDIC" Grid.Row="5" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-      <Label x:Name="lblEmail" Grid.Row="6" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
-
-      <Button Grid.Row="7" Grid.ColumnSpan="2" x:Name="PickCustomer" Clicked="PickCustomer_Clicked" Text="Výběr zákazníka" Margin="10"/>
-
+      <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding Street}" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding City}" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding ZIPCode}" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding IC}" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding DIC}" Grid.Row="5" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
+      <Label Text="{Binding Email}" Grid.Row="6" Grid.Column="1" Style="{StaticResource Key=Standard}"/>
 
     </Grid>
+    <Button Grid.Column="0" Grid.Row="1" VerticalOptions="EndAndExpand" x:Name="PickCustomer" Command="{Binding PickCustomer}" Text="Výběr zákazníka" Margin="10"/>
+
 
     <!--Modul položek-->
     <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="Beige" Margin="10,10,10,10">
