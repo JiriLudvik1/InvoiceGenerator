@@ -1,12 +1,12 @@
 ﻿namespace InvoiceGenerator.MAUI.Models
 {
-  public class InvoiceDetail
+  public class InvoiceDetailModel
   {
     public string Number { get; set; }
     public string InvoiceName { get; set; }
-    public DateOnly PaymentDue { get; set; }
-    public DateOnly CreatedDate { get; set; }
-    public DateOnly DateOfTaxableSupply { get; set; }
+    public DateTime PaymentDue { get; set; } = DateTime.Now;
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime DateOfTaxableSupply { get; set; } = DateTime.Now;
     public bool InstalationPreset { get; set; }
     public double PresetInstalationPrice { get; set; }
     public string Attachments { get; set; }

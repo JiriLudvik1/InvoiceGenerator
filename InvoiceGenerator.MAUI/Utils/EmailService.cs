@@ -18,7 +18,7 @@ namespace InvoiceGenerator.MAUI
       smtpClient.Credentials = new NetworkCredential(mailAddress.Address, password);
     }
 
-    public bool SendInvoice(Customer customer, InvoiceDetail detail, string attachmentFilePath)
+    public bool SendInvoice(CustomerModel customer, InvoiceDetailModel detail, string attachmentFilePath)
     {
       try
       {

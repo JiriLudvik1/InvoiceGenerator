@@ -14,13 +14,13 @@ namespace InvoiceGenerator.MAUI
     private readonly XFont FooterFont = new XFont("Arial", 10);
     #endregion
 
-    private readonly Customer customer;
-    private readonly InvoiceDetail invoiceDetail;
+    private readonly CustomerModel customer;
+    private readonly InvoiceDetailModel invoiceDetail;
     private readonly Config config;
     private readonly string filePath;
     private double leftMargin = 15;
 
-    public PDFGenerator(Customer customer, InvoiceDetail invoiceDetail, Config config, string filePath)
+    public PDFGenerator(CustomerModel customer, InvoiceDetailModel invoiceDetail, Config config, string filePath)
     {
       this.customer = customer;
       this.invoiceDetail = invoiceDetail;

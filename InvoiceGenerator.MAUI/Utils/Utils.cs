@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Net.Mail;
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 
@@ -113,6 +114,18 @@ namespace InvoiceGenerator.MAUI
     public static string GetInvoiceNumberString(int number)
     {
       return number.ToString().PadLeft(3,'0');
+    }
+
+    public static MailAddress CreateMailAddress(string email)
+    {
+      try
+      {
+        return new MailAddress(email);
+      }
+      catch
+      {
+        return null;
+      }
     }
 
   } 

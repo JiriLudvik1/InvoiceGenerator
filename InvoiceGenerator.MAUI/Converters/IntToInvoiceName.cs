@@ -19,5 +19,10 @@ namespace InvoiceGenerator.MAUI.Converters
     {
       return null;
     }
+
+    public static string StaticConvert(int invoiceNumber)
+    {
+      return $"FAKTURA_{Utils.GetCurrentYearString()}{Utils.GetInvoiceNumberString(invoiceNumber)}.pdf";
+    }
   }
 }

@@ -16,6 +16,15 @@
       <ColumnDefinition Width="3*"/>
     </Grid.ColumnDefinitions>
 
+    <!--Email login-->
+    <HorizontalStackLayout>
+      <Label Text="Email:" Style="{StaticResource Key=TopMenuLabel}"/>
+      <Entry Text="{Binding UserEmail}" IsReadOnly="{Binding UserLoggedIn}" Style="{StaticResource Key=TopMenuEntry}"/>
+      <Label Text="Heslo:" Style="{StaticResource Key=TopMenuLabel}"/>
+      <Entry Text="{Binding UserPassword}" IsReadOnly="{Binding UserLoggedIn}" Style="{StaticResource Key=TopMenuEntry}" IsPassword="True"/>
+      <Button Command="{Binding LoginButtonClicked}" Text="{Binding UserLoggedIn, Converter={StaticResource BoolToLoggedIn}}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+    </HorizontalStackLayout>
+
     <!--Borders-->
     <Border Style="{StaticResource Key=FrameBorder}" Grid.Row="1" Grid.Column="0"/>
     <Border Style="{StaticResource Key=FrameBorder}" Grid.Row="1" Grid.Column="1"/>
@@ -61,7 +70,7 @@
 
 
     <!--Modul položek-->
-    <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="Beige" Margin="10,10,10,10">
+    <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="Beige" Margin="10,10,10,10" BindingContext="{Binding InvoiceDetail}">
 
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
@@ -83,11 +92,11 @@
       <Label Text="Přílohy:" Grid.Row="4" Style="{StaticResource Key=StandardBold}"/>
 
 
-      <DatePicker x:Name="dpPaymentDue" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
-      <DatePicker x:Name="dpCreatedDate" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
-      <DatePicker x:Name="dpDateOfTaxableSupply" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
-      <Entry x:Name="enPresetPrice" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
-      <Entry x:Name="enAttachments" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
+      <DatePicker Date="{Binding PaymentDue}" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <DatePicker Date="{Binding CreatedDate}" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <DatePicker Date="{Binding DateOfTaxableSupply}" Grid.Row="2" Grid.Column="1" Style="{StaticResource Key=StandardDatePicker}"/>
+      <Entry Text="{Binding PresetInstalationPrice}" x:Name="enPresetPrice" Grid.Row="3" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
+      <Entry Text="{Binding Attachments}" Grid.Row="4" Grid.Column="1" Style="{StaticResource Key=DataEntry}"/>
     </Grid>
 
     <!--Modul Generování faktury-->
@@ -111,21 +120,13 @@
       <Entry Text="{Binding NextInvoiceNumber, Converter={StaticResource IntToInvoiceName}}" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource Key=StandardEntry}" IsReadOnly="True"/>
 
       <Label Grid.Row="2" Text="Cesta složky:" Style="{StaticResource Key=StandardBold}" Grid.ColumnSpan="2"/>
-      <Entry x:Name="enFolderPath" Grid.Row="3" Grid.ColumnSpan="2"  IsReadOnly="True" Style="{StaticResource Key=StandardEntry}"/>
-      <Button x:Name="btPickFolder" Text="Vybrat složku" Clicked="btPickFolder_Clicked" Grid.Row="4" Grid.ColumnSpan="2" Margin="10"/>
+      <Entry Text="{Binding InvoiceFolder}" Grid.Row="3" Grid.ColumnSpan="2"  IsReadOnly="True" Style="{StaticResource Key=StandardEntry}"/>
+      <Button Command="{Binding SelectInvoiceFolder}" Text="Vybrat složku" Grid.Row="4" Grid.ColumnSpan="2" Margin="10"/>
 
       <Button Command="{Binding GenerateInvoice}" Grid.Row="6" Text="Generovat" Margin="10" Grid.ColumnSpan="2"/>
     </Grid>
 
-    <HorizontalStackLayout Grid.Row="0">
-      <Label Text="Email:" Style="{StaticResource Key=TopMenuLabel}"/>
-      <Entry x:Name="enEmail" Style="{StaticResource Key=TopMenuEntry}"/>
-      <Label Text="Heslo:" Style="{StaticResource Key=TopMenuLabel}"/>
-      <Entry x:Name="enPassword" Style="{StaticResource Key=TopMenuEntry}" IsPassword="True"/>
-      <Button x:Name="btLoginEmail" Text="Přihlásit" Clicked="btLoginEmail_Clicked" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
 
-      <Button HorizontalOptions="StartAndExpand" Text="Vyber soubor položek" VerticalOptions="CenterAndExpand"/>
-    </HorizontalStackLayout>
 
 
     <HorizontalStackLayout Grid.Row="2">
@@ -196,5 +197,7 @@
 
     <!--Converters-->
     <converters:IntToInvoiceName x:Key="IntToInvoiceName"/>
+    <converters:BoolToUserLoggedInString x:Key="BoolToLoggedIn"/>
+
   </ContentPage.Resources>
 </ContentPage>

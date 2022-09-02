@@ -13,7 +13,7 @@ namespace InvoiceGenerator.MAUI
       this.connectionString = $"DataSource={fileLocation}";
     }
 
-    public List<Customer> GetAllCustomers()
+    public List<CustomerModel> GetAllCustomers()
     {
       try
       {
@@ -21,12 +21,12 @@ namespace InvoiceGenerator.MAUI
         {
           string sql = "SELECT * FROM Customers";
           conn.Open();
-          return conn.Query<Customer>(sql).ToList();
+          return conn.Query<CustomerModel>(sql).ToList();
         }
       }
       catch
       {
-        return new List<Customer>();
+        return new List<CustomerModel>();
       }
     }
 

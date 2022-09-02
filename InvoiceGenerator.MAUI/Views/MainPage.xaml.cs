@@ -12,7 +12,7 @@ namespace InvoiceGenerator.MAUI
     public DataTable ImportedItems { get; set; }
     public Config Configuration { get; set; }
     public DBQueries DBQueries { get; set; }
-    public Customer Customer { get; set; }
+    public CustomerModel Customer { get; set; }
     public EmailService EmailService { get; set; }
 
     public MainPageViewModel ViewModel { get; set; }
@@ -40,17 +40,6 @@ namespace InvoiceGenerator.MAUI
     }
 
     #region Invoice generation module
-    private async void btPickFolder_Clicked(object sender, EventArgs e)
-    {
-      string folderPath = await Utils.PickFolder();
-
-      if (string.IsNullOrEmpty(folderPath))
-      {
-        return;
-      }
-
-      enFolderPath.Text = folderPath;
-    }
 
     private async void btGenerateInvoice_Clicked(object sender, EventArgs e)
     {
@@ -87,7 +76,7 @@ namespace InvoiceGenerator.MAUI
       //enFileName.Text = await GenerateInvoiceName(true);
     }
 
-    private async Task HandleEmailSending(string invoiceFullPath, InvoiceDetail detail)
+    private async Task HandleEmailSending(string invoiceFullPath, InvoiceDetailModel detail)
     {
       bool sendEmail = await DisplayAlert("Odeslat emailem?", $"Odeslat fakturu na: {Customer.Email}?", "Ano", "Ne");
       if (!sendEmail)
@@ -135,16 +124,16 @@ namespace InvoiceGenerator.MAUI
       return sb.ToString();
     }
 
-    private async Task<InvoiceDetail> GenerateInvoiceDetail()
+    private async Task<InvoiceDetailModel> GenerateInvoiceDetail()
     {
-      InvoiceDetail invoiceDetail = new InvoiceDetail();
+      InvoiceDetailModel invoiceDetail = new InvoiceDetailModel();
 
       invoiceDetail.Number = await GenerateInvoiceName(false);
-      invoiceDetail.InvoiceName = await GenerateInvoiceName(true);
-      invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
-      invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
-      invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
-      invoiceDetail.InstalationPreset = true;
+      //invoiceDetail.InvoiceName = await GenerateInvoiceName(true);
+      //invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
+      //invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
+      //invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
+      //invoiceDetail.InstalationPreset = true;
 
       if(!Double.TryParse(enPresetPrice.Text, out double presetPrice))
       {
@@ -153,37 +142,12 @@ namespace InvoiceGenerator.MAUI
       }
 
       invoiceDetail.PresetInstalationPrice = presetPrice;
-      invoiceDetail.Attachments = enAttachments.Text;
 
       return invoiceDetail;
     }
     #endregion
 
     #region Top and bottom menu handlers
-    private async void btLoginEmail_Clicked(object sender, EventArgs e)
-    {
-      if (string.IsNullOrEmpty(enEmail.Text) || string.IsNullOrEmpty(enPassword.Text))
-      {
-        await ShowErrorMessage("Nevyplněné pole!");
-        return;
-      }
-
-      var mailAddress = CreateMailAddress(enEmail.Text);
-      if (mailAddress is null)
-      {
-        await ShowErrorMessage("Neplatná emailová adresa!");
-        enEmail.Text = String.Empty;
-        enPassword.Text = String.Empty;
-        return;
-      }
-
-      EmailService = new EmailService(mailAddress, enPassword.Text, Configuration.EmailHost, Configuration.EmailPort);
-
-      enPassword.IsEnabled = false;
-      enEmail.IsEnabled = false;
-      btLoginEmail.Text = "Přihlášen!";
-      btLoginEmail.IsEnabled = false;
-    }
 
     private async void btSettings_Clicked(object sender, EventArgs e)
     {

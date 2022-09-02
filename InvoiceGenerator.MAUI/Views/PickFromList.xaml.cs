@@ -4,11 +4,11 @@ namespace InvoiceGenerator.MAUI
 {
   public partial class PickFromList : ContentPage
   {
-    public readonly List<Customer> CustomerList;
-    public Customer SelectedCustomer { get; set; }
+    public readonly List<CustomerModel> CustomerList;
+    public CustomerModel SelectedCustomer { get; set; }
     public bool IsCanceled { get; set; } = true;
 
-    public PickFromList(List<Customer> customerList)
+    public PickFromList(List<CustomerModel> customerList)
     {
       InitializeComponent();
       CustomerList = customerList;
@@ -25,7 +25,7 @@ namespace InvoiceGenerator.MAUI
         return;
       }
 
-      SelectedCustomer = customers.SelectedItem as Customer;
+      SelectedCustomer = customers.SelectedItem as CustomerModel;
       IsCanceled = false;
       await Navigation.PopAsync();
     }
