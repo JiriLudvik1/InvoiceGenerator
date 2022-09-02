@@ -1,6 +1,6 @@
 ﻿using InvoiceGenerator.MAUI.Models;
-using Microsoft.Maui.Controls;
 using System.Data;
+using System.Text;
 using System.Windows.Input;
 
 namespace InvoiceGenerator.MAUI.ViewModels
@@ -15,24 +15,21 @@ namespace InvoiceGenerator.MAUI.ViewModels
     public DBQueries DBQueries { get => GetValue<DBQueries>(); set => SetValue(value); }
     public Customer Customer { get => GetValue<Customer>(); set => SetValue(value); }
     public EmailService EmailService { get; set; }
-
+    public int NextInvoiceNumber { get => GetValue<int>(); set => SetValue(value); }
 
     public MainPageViewModel(INavigation navigation)
     {
       Configuration = Config.InitializeConfigFromDisk();
       InitializeDb();
       this.navigation = navigation;
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
 
     private void InitializeDb()
     {
       DBQueries = new DBQueries(Configuration.ConnectionString);
-      //string newInvoiceName = await GenerateInvoiceName(true);
-      //if (string.IsNullOrEmpty(newInvoiceName))
-      //{
-      //  return;
-      //}
-      //enFileName.Text = newInvoiceName;
+      string currentYearString = Utils.GetCurrentYearString();
+      NextInvoiceNumber = DBQueries.GetNextInvoiceNumber(currentYearString);
     }
 
     public ICommand PickCustomer => new Command(async () =>
@@ -48,6 +45,11 @@ namespace InvoiceGenerator.MAUI.ViewModels
       }
 
       Customer = customerSelectPage.SelectedCustomer;
+    });
+
+    public ICommand GenerateInvoice => new Command(() =>
+    {
+      NextInvoiceNumber++;
     });
   }
 }

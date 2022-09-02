@@ -37,45 +37,6 @@ namespace InvoiceGenerator.MAUI
       {
         return;
       }
-      enFileName.Text = newInvoiceName;
-    }
-
-    private async void btPickFile_Clicked(object sender, EventArgs e)
-    {
-      //try
-      //{
-      //  var selectedFile = await Utils.PickFile();
-
-      //  if (selectedFile is null)
-      //  {
-      //    return;
-      //  }
-
-      //  string fileContents = Utils.ReadFileContents(selectedFile.FullPath);
-      //  ImportedItems = null;
-      //  ImportedItems = Utils.CSVStringToDataTable(fileContents, Consts.csvDelimiter);
-
-      //  if (ImportedItems is null)
-      //  {
-      //    ItemsCSVFilePath = String.Empty;
-      //    return;
-      //  }
-
-      //  if (Utils.TableContainsColumns(Consts.ItemsMandatoryColumns, ImportedItems, out string missingColumn))
-      //  {
-      //    await ShowErrorMessage($"Chybí sloupec {missingColumn}");
-      //    ImportedItems = null;
-      //    ItemsCSVFilePath = String.Empty;
-      //    return;
-      //  }
-
-      //  ItemsCSVFilePath = selectedFile.FullPath;
-      //}
-      //finally
-      //{
-      //  tbCsvPath.Text = ItemsCSVFilePath;
-      //  SemanticScreenReader.Announce(tbCsvPath.Text);
-      //}
     }
 
     #region Invoice generation module
@@ -93,37 +54,37 @@ namespace InvoiceGenerator.MAUI
 
     private async void btGenerateInvoice_Clicked(object sender, EventArgs e)
     {
-      if (Customer is null)
-      {
-        await ShowErrorMessage("Nebyl vybrán zákazník");
-        return;
-      }
+      //if (Customer is null)
+      //{
+      //  await ShowErrorMessage("Nebyl vybrán zákazník");
+      //  return;
+      //}
 
-      string invoiceFullPath = $"{enFolderPath.Text}\\{enFileName.Text}";
-      var detail = await GenerateInvoiceDetail();
+      //string invoiceFullPath = $"{enFolderPath.Text}\\{enFileName.Text}";
+      //var detail = await GenerateInvoiceDetail();
 
-      if (detail is null)
-      {
-        return;
-      }
+      //if (detail is null)
+      //{
+      //  return;
+      //}
 
-      var generator = new PDFGenerator(Customer, detail, Configuration, invoiceFullPath);
+      //var generator = new PDFGenerator(Customer, detail, Configuration, invoiceFullPath);
 
-      if (!generator.GenerateAndSaveInvoicePDF())
-      {
-        await ShowErrorMessage("Chyba při generování PDF");
-        return;
-      }
+      //if (!generator.GenerateAndSaveInvoicePDF())
+      //{
+      //  await ShowErrorMessage("Chyba při generování PDF");
+      //  return;
+      //}
 
-      await DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
+      //await DisplayAlert("Info", "PDF bylo vygenerováno!", "Potvrdit");
 
-      if (EmailService is not null && !string.IsNullOrEmpty(Customer.Email))
-      {
-        await HandleEmailSending(invoiceFullPath, detail);
-      }
+      //if (EmailService is not null && !string.IsNullOrEmpty(Customer.Email))
+      //{
+      //  await HandleEmailSending(invoiceFullPath, detail);
+      //}
 
-      DBQueries.IncrementInvoiceNumber(Utils.GetCurrentYearString());
-      enFileName.Text = await GenerateInvoiceName(true);
+      //DBQueries.IncrementInvoiceNumber(Utils.GetCurrentYearString());
+      //enFileName.Text = await GenerateInvoiceName(true);
     }
 
     private async Task HandleEmailSending(string invoiceFullPath, InvoiceDetail detail)
