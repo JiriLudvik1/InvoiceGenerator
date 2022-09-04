@@ -87,7 +87,7 @@ namespace InvoiceGenerator.MAUI
         gfx.DrawRectangle(XPens.Black, 162, GetRowY(1), page.Width - leftMargin - 162, GetRowY(14) + 5);
         double secondColumnX = 167;
         gfx.DrawString("Faktura č.", NormalBoldFont, XBrushes.Black, secondColumnX, GetRowY(2));
-        gfx.DrawString(invoiceDetail.Number, NormalFont, XBrushes.Black, secondColumnX + 100, GetRowY(2));
+        gfx.DrawString(Utils.GetInvoiceFullName(invoiceDetail.Number), NormalFont, XBrushes.Black, secondColumnX + 100, GetRowY(2));
         gfx.DrawString("Konst. symbol", NormalBoldFont, XBrushes.Black, secondColumnX, GetRowY(3));
         gfx.DrawString(config.ConstantSymbol, NormalFont, XBrushes.Black, secondColumnX + 100, GetRowY(3));
 

@@ -129,6 +129,16 @@ namespace InvoiceGenerator.MAUI
       return number.ToString().PadLeft(3,'0');
     }
 
+    public static string GetInvoiceFullName(int number)
+    {
+      return GetInvoiceFullName(number, GetCurrentYearString());
+    }
+
+    public static string GetInvoiceFullName(int number, string year)
+    {
+      return $"{year}{GetInvoiceNumberString(number)}";
+    }
+
     public static MailAddress CreateMailAddress(string email)
     {
       try

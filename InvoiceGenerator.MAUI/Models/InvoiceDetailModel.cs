@@ -2,7 +2,7 @@
 {
   public class InvoiceDetailModel
   {
-    public string Number { get; set; }
+    public int Number { get; set; }
     public string InvoiceName { get; set; }
     public DateTime PaymentDue { get; set; } = DateTime.Now;
     public DateTime CreatedDate { get; set; } = DateTime.Now;

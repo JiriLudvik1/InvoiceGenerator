@@ -69,6 +69,15 @@ namespace InvoiceGenerator.MAUI.ViewModels
     #region Invoice generation
     public ICommand GenerateInvoice => new Command(async () =>
     {
+      if (EmailService is null)
+      {
+        //TODO: možná vymyslet, jak nezanořovat if
+        if(!await App.AlertService.ShowYesNoDialog("Nejste přihlášen emailem.\nPokračovat?"))
+        {
+          return;
+        }
+      }
+
       if (Customer is null)
       {
         await App.AlertService.ShowErrorAsync("Nebyl vybrán zákazník");
@@ -82,6 +91,7 @@ namespace InvoiceGenerator.MAUI.ViewModels
         await App.AlertService.ShowErrorAsync("Detail faktury nebyl incializován");
         return;
       }
+      InvoiceDetail.Number = NextInvoiceNumber;
 
       var generator = new PDFGenerator(Customer, InvoiceDetail, Configuration, invoiceFullPath);
 
