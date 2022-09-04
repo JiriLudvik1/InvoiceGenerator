@@ -68,7 +68,7 @@ namespace InvoiceGenerator.MAUI
     }
 
     #region Files and Folders picking
-    public static async Task<FileResult> PickFile()
+    public static async Task<FileResult> PickFileAsync()
     {
       try
       {
@@ -80,6 +80,19 @@ namespace InvoiceGenerator.MAUI
         }
 
         return result;
+      }
+      catch
+      {
+        return null;
+      }
+    }
+
+    public static FileResult PickFile()
+    {
+      try
+      {
+        return FilePicker.Default.PickAsync().Result;
+        
       }
       catch
       {

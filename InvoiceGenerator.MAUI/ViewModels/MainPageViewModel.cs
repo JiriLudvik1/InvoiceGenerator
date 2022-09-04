@@ -1,5 +1,6 @@
 ﻿using InvoiceGenerator.MAUI.Converters;
 using InvoiceGenerator.MAUI.Models;
+using Microsoft.Maui.Controls;
 using System.Text;
 using System.Windows.Input;
 
@@ -160,5 +161,21 @@ namespace InvoiceGenerator.MAUI.ViewModels
       UserLoggedIn = false;
     }
     #endregion
+
+    public ICommand ShowSettings => new Command(async () =>
+    {
+      var settingsPage = new SettingsPage(Configuration);
+      
+      await Utils.ShowPageAsDialog(navigation, settingsPage);
+
+      if (settingsPage.ViewModel.IsCanceled)
+      {
+        return;
+      }
+
+      Configuration = settingsPage.ViewModel.Configuration;
+      Config.SaveConfigToDisk(Configuration);
+      DBQueries = new DBQueries(Configuration.ConnectionString);
+    });
   }
 }

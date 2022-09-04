@@ -126,11 +126,8 @@
       <Button Command="{Binding GenerateInvoice}" Grid.Row="6" Text="Generovat" Margin="10" Grid.ColumnSpan="2"/>
     </Grid>
 
-
-
-
     <HorizontalStackLayout Grid.Row="2">
-      <Button x:Name="btSettings" Text="Nastavení" Clicked="btSettings_Clicked"/>
+      <Button Command="{Binding ShowSettings}" Text="Nastavení"/>
     </HorizontalStackLayout>
 
   </Grid>

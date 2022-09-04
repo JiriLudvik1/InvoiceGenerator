@@ -76,23 +76,6 @@ namespace InvoiceGenerator.MAUI
       //enFileName.Text = await GenerateInvoiceName(true);
     }
 
-    private async Task HandleEmailSending(string invoiceFullPath, InvoiceDetailModel detail)
-    {
-      bool sendEmail = await DisplayAlert("Odeslat emailem?", $"Odeslat fakturu na: {Customer.Email}?", "Ano", "Ne");
-      if (!sendEmail)
-      {
-        return;
-      }
-
-      if(!EmailService.SendInvoice(Customer, detail, invoiceFullPath))
-      {
-        await ShowErrorMessage("Nepodařilo se odeslat email!");
-        return;
-      }
-
-      await DisplayAlert("Info", "Email byl odeslán!", "Zrušit");
-    }
-
     public async Task<string> GenerateInvoiceName(bool returnFileName)
     {
       string yearString = Utils.GetCurrentYearString();
@@ -123,61 +106,7 @@ namespace InvoiceGenerator.MAUI
 
       return sb.ToString();
     }
-
-    private async Task<InvoiceDetailModel> GenerateInvoiceDetail()
-    {
-      InvoiceDetailModel invoiceDetail = new InvoiceDetailModel();
-
-      invoiceDetail.Number = await GenerateInvoiceName(false);
-      //invoiceDetail.InvoiceName = await GenerateInvoiceName(true);
-      //invoiceDetail.PaymentDue = DateOnly.FromDateTime(dpPaymentDue.Date);
-      //invoiceDetail.CreatedDate = DateOnly.FromDateTime(dpCreatedDate.Date);
-      //invoiceDetail.DateOfTaxableSupply = DateOnly.FromDateTime(dpDateOfTaxableSupply.Date);
-      //invoiceDetail.InstalationPreset = true;
-
-      if(!Double.TryParse(enPresetPrice.Text, out double presetPrice))
-      {
-        await ShowErrorMessage("Neplatná cena");
-        return null;
-      }
-
-      invoiceDetail.PresetInstalationPrice = presetPrice;
-
-      return invoiceDetail;
-    }
     #endregion
-
-    #region Top and bottom menu handlers
-
-    private async void btSettings_Clicked(object sender, EventArgs e)
-    {
-      var settingsPage = new SettingsPage(Configuration);
-
-      await Utils.ShowPageAsDialog(Navigation, settingsPage);
-
-      if (settingsPage.IsCanceled)
-      {
-        return;
-      }
-
-      Configuration = settingsPage.Configuration;
-      Config.SaveConfigToDisk(Configuration);
-      DBQueries = new DBQueries(Configuration.ConnectionString);
-    }
-    #endregion
-
-    private MailAddress CreateMailAddress(string email)
-    {
-      try
-      {
-        return new MailAddress(email);
-      }
-      catch 
-      {
-        return null;
-      }
-    }
-
     private async Task ShowErrorMessage(string message)
     {
       await DisplayAlert("Chyba", message, "Zrušit");
