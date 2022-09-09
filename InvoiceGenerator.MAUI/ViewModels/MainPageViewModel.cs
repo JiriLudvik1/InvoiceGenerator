@@ -46,12 +46,12 @@ namespace InvoiceGenerator.MAUI.ViewModels
 
       await Utils.ShowPageAsDialog(navigation, customerSelectPage);
 
-      if (customerSelectPage.IsCanceled)
+      if (customerSelectPage.ViewModel.IsCanceled)
       {
         return;
       }
 
-      Customer = customerSelectPage.SelectedCustomer;
+      Customer = customerSelectPage.ViewModel.SelectedCustomer;
     });
 
     public ICommand SelectInvoiceFolder => new Command(async () =>

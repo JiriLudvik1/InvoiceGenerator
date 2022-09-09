@@ -13,9 +13,11 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="0.5*"/>
+      <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Grid BackgroundColor="LightGrey" Grid.ColumnSpan="2">
+    <Grid BackgroundColor="LightGrey" Grid.ColumnSpan="4">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
@@ -35,7 +37,7 @@
       <Label Grid.Column="6" Text="Email" Style="{StaticResource Key=Header}"/>
     </Grid>
 
-    <ListView x:Name="customers" Grid.ColumnSpan="2" Grid.Row="1" ItemSelected="customers_ItemSelected">
+    <ListView ItemsSource="{Binding VisibleCustomers}" SelectedItem="{Binding SelectedCustomer}" Grid.ColumnSpan="4" Grid.Row="1">
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
@@ -63,8 +65,12 @@
       </ListView.ItemTemplate>
     </ListView>
 
-    <Button Grid.Row="2" Grid.Column="0" x:Name="btCancel" Clicked="btCancel_Clicked" Text="Zrušit"/>
-    <Button Grid.Row="2" Grid.Column="1" x:Name="btConfirm" Clicked="btConfirm_Clicked" Text="Potvrdit"/>
+    <Button Command="{Binding Cancel}" Grid.Row="2" Grid.Column="0" Text="Zrušit"/>
+    <Entry Grid.Row="2" Grid.Column="1" Text="{Binding NameFilter}"/>
+    <Button Command="{Binding FilterByName}" Grid.Row="2" Grid.Column="2" Text="Filtrovat"/>
+    <Button Command="{Binding Confirm}" Grid.Row="2" Grid.Column="3" Text="Potvrdit"/>
+
+
   </Grid>
 
   <ContentPage.Resources>
